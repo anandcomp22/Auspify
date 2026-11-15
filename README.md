@@ -1,2 +1,40 @@
-# Auspify
-A collection of 6 practical Full Stack Development tasks completed as part of the 4-week internship program at Auspify Technologies, focusing on frontend development, backend APIs, database management, and real-world web application development.
+# Auspify Technologies – Full Stack Development Internship
+
+Welcome to my Full Stack Development Internship repository at **Auspify Technologies**.
+
+This repository contains the practical tasks and projects assigned during the **4-week internship program (October–November 2026)**. The internship focuses on strengthening my frontend and backend development skills through hands-on implementation of real-world web applications.
+
+## Internship Overview
+
+- **Organization:** Auspify Technologies
+- **Domain:** Full Stack Development
+- **Duration:** 4 Weeks
+- **Assigned Tasks:** 6
+- **Technologies:** HTML, CSS, JavaScript, React.js, Node.js, Express.js, MongoDB/MySQL
+
+## Assigned Tasks
+
+| Task | Project | Difficulty |
+|------|---------|------------|
+| 01 | Personal Portfolio Website | Easy |
+| 02 | Student Management System | Easy |
+| 03 | Expense Tracker Web Application | Medium |
+| 04 | E-Commerce Website | Medium |
+| 05 | Job Portal Application | Advanced |
+| 06 | Learning Management System (LMS) | Advanced |
+
+## Repository Structure
+
+Each task will be maintained in a separate folder containing its source code, implementation, and relevant documentation.
+
+```text
+Auspify-Full-Stack-Internship/
+│
+├── Task-01-Personal-Portfolio/
+├── Task-02-Student-Management-System/
+├── Task-03-Expense-Tracker/
+├── Task-04-E-Commerce-Website/
+├── Task-05-Job-Portal/
+├── Task-06-Learning-Management-System/
+│
+└── README.md
