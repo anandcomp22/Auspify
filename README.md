@@ -27,14 +27,21 @@ This repository contains the practical tasks and projects assigned during the **
 
 Each task will be maintained in a separate folder containing its source code, implementation, and relevant documentation.
 
-```text
-Auspify-Full-Stack-Internship/
-│
-├── Task-01-Personal-Portfolio/
-├── Task-02-Student-Management-System/
-├── Task-03-Expense-Tracker/
-├── Task-04-E-Commerce-Website/
-├── Task-05-Job-Portal/
-├── Task-06-Learning-Management-System/
-│
-└── README.md
+## Learning Objectives
+
+- Build responsive and user-friendly web applications.
+- Develop and integrate RESTful APIs.
+- Implement database connectivity and CRUD operations.
+- Understand authentication and authorization.
+- Improve problem-solving and debugging skills.
+- Gain practical experience in full-stack application development.
+
+## Acknowledgement
+
+I would like to thank **Auspify Technologies** for providing this opportunity to enhance my technical skills through practical development tasks.
+
+---
+
+<p align="center">
+  <b>Learn • Build • Grow </b>
+</p>
