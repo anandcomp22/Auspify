@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Auspify Treasury Ledger</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="legal-page">
+
+  <header class="system-header">
+    <div class="header-topline">
+      <div class="topline-left">
+        <div class="domain-pill">
+          <span class="indicator-dot pulse"></span>
+          <span class="mono">treasury.auspify.internal</span>
+        </div>
+        <div class="domain-pill">
+          <span class="mono">COMPLIANCE / LEGAL</span>
+        </div>
+      </div>
+      <div class="topline-right">
+        <a href="/" class="btn btn-secondary btn-sm">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          RETURN TO LEDGER
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="legal-container">
+    <div class="legal-header-block">
+      <div class="section-badge mono">DOCUMENT REF: POL-PRIV-2026.04</div>
+      <h1 class="legal-title">FINANCIAL DATA PRIVACY DISCLOSURE</h1>
+      <p class="legal-meta mono">EFFECTIVE DATE: 2026-01-01 | LAST AUDITED: 2026-11-15 | SECURITY STATUS: ENCRYPTED</p>
+    </div>
+
+    <div class="legal-content-grid">
+      <article class="legal-section">
+        <h2 class="section-title mono">01 // INFORMATION ARCHITECTURE AND SCOPE</h2>
+        <p>Auspify Technologies operates the Treasury and Expense Management Platform under strict institutional standards. This policy governs the processing, retention, and isolation of financial records, transaction histories, expense vouchers, and authenticated account identifiers.</p>
+        <p>Data stored within the system is strictly isolated at the tenant and account layer through relational constraints and authenticated session boundaries.</p>
+      </article>
+
+      <article class="legal-section">
+        <h2 class="section-title mono">02 // FINANCIAL RECORD RETENTION & AUDITABILITY</h2>
+        <p>All recorded income and expense transactions maintain an immutable cryptographic reference hash. Modification of records creates an audit timestamp reflecting the exact update event.</p>
+        <p>Financial records are retained for the operational lifecycle determined by legal reporting requirements. User-initiated deletion completely unlinks and removes associated transaction records from the active ledger.</p>
+      </article>
+
+      <article class="legal-section">
+        <h2 class="section-title mono">03 // ACCESS CONTROL & CREDENTIAL ENCRYPTION</h2>
+        <p>User authentication relies on salted cryptographic password hashing via the bcrypt standard. Plaintext passwords are never persisted to storage media or logged to standard output.</p>
+        <p>API sessions utilize high-entropy cryptographic hex tokens with strictly enforced time-to-live expirations. Tokens transmitted over the wire require TLS encryption under standard HTTPS protocols.</p>
+      </article>
+
+      <article class="legal-section">
+        <h2 class="section-title mono">04 // THIRD PARTY DISCLOSURES & INTEGRATIONS</h2>
+        <p>Auspify Technologies does not monetize, sell, distribute, or broker transaction logs or financial patterns to external advertising networks or data brokers.</p>
+        <p>Exported CSV and JSON statements are generated on-the-fly and streamed directly to the authenticated client without third-party intermediate caching.</p>
+      </article>
+
+      <article class="legal-section">
+        <h2 class="section-title mono">05 // DATA GOVERNANCE & CONTACT</h2>
+        <p>For questions regarding data processing or to request ledger compliance certification, contact the treasury systems administration team at security@auspify.internal.</p>
+      </article>
+    </div>
+
+    <footer class="legal-footer">
+      <div class="legal-footer-inner">
+        <span class="mono">AUSPIFY TECHNOLOGIES CORP - SECURE TREASURY INFRASTRUCTURE</span>
+        <span class="mono">SYSTEM ID: AUS-TRX-V1</span>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>

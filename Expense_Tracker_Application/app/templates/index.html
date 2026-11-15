@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auspify Treasury - Financial &amp; Expense Ledger</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <header class="system-header">
+    <div class="header-topline">
+      <div class="topline-left">
+        <div class="domain-pill">
+          <span class="indicator-dot pulse"></span>
+          <span class="mono">treasury.auspify.internal</span>
+        </div>
+        <div class="domain-pill">
+          <span class="mono">STATUS: ACTIVE RESOLVED</span>
+        </div>
+        <div class="domain-pill">
+          <span class="mono">ENVIRONMENT: PRODUCTION</span>
+        </div>
+      </div>
+      <div class="topline-right">
+        <span class="mono" style="color: var(--text-muted); font-size: 11px;">UTC CLOCK:</span>
+        <span id="utc-clock" class="mono" style="color: var(--text-secondary); font-size: 11px;">--:--:-- UTC</span>
+        <div id="auth-user-badge" class="domain-pill" style="cursor: pointer;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span id="header-username" class="mono">treasury_admin</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-main">
+      <div class="brand-lockup">
+        <div class="brand-emblem">
+          <svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+            <rect width="64" height="64" fill="#0C0E12"/>
+            <rect x="8" y="8" width="48" height="48" stroke="#222631" stroke-width="2"/>
+            <path d="M16 48 L16 16 L32 32 L48 16 L48 48" stroke="#F3F4F6" stroke-width="3" stroke-linecap="square"/>
+            <rect x="22" y="44" width="20" height="4" fill="#10B981"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">AUSPIFY TREASURY &amp; CAPITAL LEDGER</h1>
+          <p class="brand-subtitle">Financial Position, Operational Expenses &amp; Inflow System v1.0.0</p>
+        </div>
+      </div>
+
+      <nav class="header-nav">
+        <button class="nav-link active" data-tab="overview">01 // OVERVIEW &amp; LIQUIDITY</button>
+        <button class="nav-link" data-tab="ledger">02 // TRANSACTIONS LEDGER</button>
+        <button class="nav-link" data-tab="reports">03 // FINANCIAL REPORTS</button>
+        <button class="nav-link" data-tab="domain">04 // DOMAIN &amp; GOVERNANCE</button>
+      </nav>
+
+      <div class="header-actions">
+        <button id="btn-open-create-modal" class="btn btn-primary btn-sm">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          RECORD ENTRY
+        </button>
+        <button id="btn-quick-export" class="btn btn-sm">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          CSV EXPORT
+        </button>
+        <button id="btn-auth-action" class="btn btn-sm">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          ACCOUNT
+        </button>
+      </div>
+    </div>
+
+    <div class="metrics-strip">
+      <div class="metric-cell">
+        <div class="metric-index">01.0 // TOTAL INFLOW</div>
+        <div class="metric-value-row">
+          <span id="kpi-total-income" class="metric-num positive mono">$0.00</span>
+          <span class="metric-sub">USD</span>
+        </div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-index">01.1 // TOTAL OUTFLOW</div>
+        <div class="metric-value-row">
+          <span id="kpi-total-expense" class="metric-num negative mono">$0.00</span>
+          <span class="metric-sub">USD</span>
+        </div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-index">01.2 // NET CASH FLOW</div>
+        <div class="metric-value-row">
+          <span id="kpi-net-savings" class="metric-num mono">$0.00</span>
+          <span class="metric-sub">SURPLUS</span>
+        </div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-index">01.3 // RETENTION RATE</div>
+        <div class="metric-value-row">
+          <span id="kpi-savings-rate" class="metric-num mono">0.0%</span>
+          <span class="metric-sub">SAVED</span>
+        </div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-index">01.4 // LEDGER DENSITY</div>
+        <div class="metric-value-row">
+          <span id="kpi-txn-density" class="metric-num mono">0</span>
+          <span class="metric-sub">RECORDS</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <div id="tab-overview" class="tab-pane active">
+      <div class="overview-grid">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">CASH FLOW VELOCITY // 6-MONTH TRAJECTORY</div>
+              <div class="section-subtitle">Real-time aggregate monthly inflows versus operational outflows</div>
+            </div>
+            <div class="domain-pill">
+              <span class="mono">LIVE AUDIT DATA</span>
+            </div>
+          </div>
+          <div id="overview-chart" class="chart-container"></div>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: var(--accent-income);"></span>
+              <span>INFLOW / INCOME</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: var(--accent-expense);"></span>
+              <span>OUTFLOW / EXPENSES</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">EXPENDITURE BY CATEGORY</div>
+              <div class="section-subtitle">Top operational expense distributions</div>
+            </div>
+          </div>
+          <div id="overview-category-list" class="category-breakdown-list"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">RECENT TREASURY MOVEMENTS</div>
+            <div class="section-subtitle">Chronological ledger journal entries</div>
+          </div>
+          <button class="btn btn-sm" onclick="switchTab('ledger')">VIEW FULL LEDGER</button>
+        </div>
+        <div class="data-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>REF ID</th>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>CATEGORY</th>
+                <th>DESCRIPTION</th>
+                <th>METHOD</th>
+                <th>STATUS</th>
+                <th style="text-align: right;">AMOUNT</th>
+                <th style="text-align: right;">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="overview-recent-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-ledger" class="tab-pane">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">02 // TRANSACTION REGISTRY &amp; JOURNAL</h2>
+          <p class="section-subtitle">Comprehensive management of income entries and expense debits with verified audit references</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button id="btn-export-csv-ledger" class="btn btn-sm">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            EXPORT CSV
+          </button>
+          <button id="btn-export-json-ledger" class="btn btn-sm">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            EXPORT JSON
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-toolbar">
+        <div class="input-group">
+          <span class="input-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <input id="filter-search" type="text" class="form-control has-icon" placeholder="Search reference, description, notes...">
+        </div>
+
+        <div>
+          <select id="filter-type" class="form-control">
+            <option value="">All Types (Income &amp; Expense)</option>
+            <option value="expense">Expenses Only</option>
+            <option value="income">Incomes Only</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="filter-category" class="form-control">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="filter-method" class="form-control">
+            <option value="">All Methods</option>
+            <option value="Wire Transfer">Wire Transfer</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Corporate Card">Corporate Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+          </select>
+        </div>
+
+        <div>
+          <select id="filter-status" class="form-control">
+            <option value="">All Statuses</option>
+            <option value="Completed">Completed</option>
+            <option value="Pending">Pending</option>
+            <option value="Reconciled">Reconciled</option>
+          </select>
+        </div>
+
+        <button id="btn-reset-filters" class="btn btn-sm">RESET</button>
+      </div>
+
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="sortable" onclick="setSort('reference_id')">REF ID</th>
+              <th class="sortable" onclick="setSort('date')">POSTING DATE</th>
+              <th class="sortable" onclick="setSort('type')">CLASS</th>
+              <th class="sortable" onclick="setSort('category')">CATEGORY</th>
+              <th class="sortable" onclick="setSort('description')">DESCRIPTION &amp; AUDIT TRAIL</th>
+              <th>METHOD</th>
+              <th>STATUS</th>
+              <th class="sortable" onclick="setSort('amount')" style="text-align: right;">AMOUNT</th>
+              <th style="text-align: right;">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="ledger-tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination-bar">
+        <div>
+          SHOWING <span id="page-item-start">0</span> - <span id="page-item-end">0</span> OF <span id="page-item-total">0</span> ENTRIES
+        </div>
+        <div class="pagination-actions">
+          <button id="btn-prev-page" class="btn btn-sm">PREVIOUS</button>
+          <span class="mono" id="page-indicator">PAGE 1 / 1</span>
+          <button id="btn-next-page" class="btn btn-sm">NEXT</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-reports" class="tab-pane">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">03 // FINANCIAL REPORTS &amp; CAPITAL ALLOCATION</h2>
+          <p class="section-subtitle">Mathematical audits and structural breakdown of treasury operations</p>
+        </div>
+      </div>
+
+      <div class="reports-grid">
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">OUTFLOW DISBURSEMENT BY CATEGORY</div>
+            <div class="mono" id="report-expense-total" style="color: var(--accent-expense);">$0.00</div>
+          </div>
+          <div id="reports-expense-categories" class="category-breakdown-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">INFLOW SOURCES BY CATEGORY</div>
+            <div class="mono" id="report-income-total" style="color: var(--accent-income);">$0.00</div>
+          </div>
+          <div id="reports-income-categories" class="category-breakdown-list"></div>
+        </div>
+
+        <div class="card full-card">
+          <div class="card-head">
+            <div class="card-title">PAYMENT INSTRUMENT DISTRIBUTION</div>
+            <div class="section-subtitle">Disbursements and receipts classified by settlement rail</div>
+          </div>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>PAYMENT METHOD</th>
+                  <th>TRANSACTION COUNT</th>
+                  <th style="text-align: right;">VOLUME (USD)</th>
+                </tr>
+              </thead>
+              <tbody id="reports-methods-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card full-card">
+          <div class="card-head">
+            <div class="card-title">PERIODIC SETTLEMENT TIMELINE AUDIT</div>
+            <div class="section-subtitle">Monthly balance reconciliation ledger</div>
+          </div>
+          <div class="data-table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>MONTHLY CYCLE</th>
+                  <th style="text-align: right;">TOTAL INFLOW</th>
+                  <th style="text-align: right;">TOTAL OUTFLOW</th>
+                  <th style="text-align: right;">NET CASH DELTA</th>
+                  <th>POSITION STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="reports-timeline-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-domain" class="tab-pane">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">04 // DOMAIN CONFIGURATION &amp; DEPLOYMENT GOVERNANCE</h2>
+          <p class="section-subtitle">System infrastructure verification, verified domain connectivity, and legal compliance</p>
+        </div>
+      </div>
+
+      <div class="domain-verification-card">
+        <h3 class="section-title mono" style="margin-bottom: 8px;">VERIFIED CUSTOM DOMAIN ROUTING</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">The treasury ledger application is bound to a verified institutional hostname with DNS routing active.</p>
+
+        <table class="audit-table">
+          <tr>
+            <td>ASSIGNED DOMAIN</td>
+            <td class="mono" style="color: var(--text-primary); font-weight: 700;">treasury.auspify.internal</td>
+          </tr>
+          <tr>
+            <td>ROUTING STATUS</td>
+            <td>
+              <span class="badge badge-income">ACTIVE RESOLVED</span>
+            </td>
+          </tr>
+          <tr>
+            <td>DNS SPECIFICATION</td>
+            <td class="mono">CNAME @ -> treasury.auspify.internal</td>
+          </tr>
+          <tr>
+            <td>EDGE GATEWAY IP</td>
+            <td class="mono">198.51.100.42</td>
+          </tr>
+          <tr>
+            <td>TRANSPORT SECURITY</td>
+            <td class="mono">TLS 1.3 / STRICT TRANSPORT SECURITY ENFORCED</td>
+          </tr>
+          <tr>
+            <td>AUTHENTICATION ISOLATION</td>
+            <td class="mono">BCRYPT 12-ROUND / SESSION TOKEN BOUNDARIES</td>
+          </tr>
+        </table>
+
+        <h3 class="section-title mono" style="margin-top: 32px; margin-bottom: 12px;">HARD LAUNCH VERIFICATION CHECKLIST</h3>
+        <div class="checklist-item">
+          <div class="check-box-verified">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Custom Domain Connected &amp; Verified (treasury.auspify.internal)</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box-verified">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Custom Favicon Active (/favicon.svg &amp; /favicon.ico)</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box-verified">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Platform Attribution Badges and Promotional Tags Completely Removed</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box-verified">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Compliant Financial Privacy Policy Live (<a href="/privacy" target="_blank" style="text-decoration: underline; color: var(--accent-neutral);">/privacy</a>)</span>
+        </div>
+        <div class="checklist-item">
+          <div class="check-box-verified">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span>Compliant Platform Terms &amp; Conditions Live (<a href="/terms" target="_blank" style="text-decoration: underline; color: var(--accent-neutral);">/terms</a>)</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="side-dossier" class="side-dossier">
+    <div class="dossier-head">
+      <div>
+        <div class="mono" style="font-size: 10px; color: var(--text-muted);">LEDGER DOSSIER</div>
+        <div id="dossier-ref-id" class="brand-title mono" style="font-size: 14px;">TXN-0000</div>
+      </div>
+      <button class="btn-icon" onclick="closeDossier()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="dossier-body">
+      <div class="dossier-amount-card">
+        <div class="dossier-meta-label">SETTLEMENT VALUE</div>
+        <div id="dossier-amount" class="dossier-big-amount">$0.00</div>
+        <div id="dossier-class-badge" style="margin-top: 8px;"></div>
+      </div>
+
+      <div class="dossier-meta-list">
+        <div class="dossier-meta-item">
+          <span class="dossier-meta-label">CATEGORY</span>
+          <span id="dossier-category" class="mono">-</span>
+        </div>
+        <div class="dossier-meta-item">
+          <span class="dossier-meta-label">POSTING TIMESTAMP</span>
+          <span id="dossier-date" class="mono">-</span>
+        </div>
+        <div class="dossier-meta-item">
+          <span class="dossier-meta-label">PAYMENT INSTRUMENT</span>
+          <span id="dossier-method" class="mono">-</span>
+        </div>
+        <div class="dossier-meta-item">
+          <span class="dossier-meta-label">AUDIT STATUS</span>
+          <span id="dossier-status" class="mono">-</span>
+        </div>
+        <div class="dossier-meta-item" style="flex-direction: column; gap: 4px;">
+          <span class="dossier-meta-label">TRANSACTION DESCRIPTION</span>
+          <span id="dossier-desc" style="color: var(--text-primary); font-size: 12px;">-</span>
+        </div>
+        <div class="dossier-meta-item" style="flex-direction: column; gap: 4px;">
+          <span class="dossier-meta-label">INTERNAL AUDITOR NOTES</span>
+          <span id="dossier-notes" style="color: var(--text-secondary); font-size: 12px; font-style: italic;">None</span>
+        </div>
+        <div class="dossier-meta-item">
+          <span class="dossier-meta-label">RECORD CREATION</span>
+          <span id="dossier-created-at" class="mono" style="font-size: 11px;">-</span>
+        </div>
+      </div>
+    </div>
+    <div class="dossier-foot">
+      <button id="btn-dossier-edit" class="btn btn-sm">EDIT ENTRY</button>
+      <button id="btn-dossier-delete" class="btn btn-danger btn-sm">DELETE</button>
+    </div>
+  </div>
+
+  <div id="modal-transaction" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h3 id="modal-txn-title" class="modal-title">RECORD TREASURY ENTRY</h3>
+        <button class="btn-icon" onclick="closeTxnModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <form id="form-transaction">
+        <input type="hidden" id="form-txn-id" value="">
+        <div class="modal-body">
+          <div class="form-grid-2">
+            <div>
+              <label class="field-label">ENTRY CLASSIFICATION</label>
+              <select id="form-txn-type" class="form-control" required>
+                <option value="expense">Expense (Outflow Debit)</option>
+                <option value="income">Income (Inflow Credit)</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">AMOUNT (USD)</label>
+              <input id="form-txn-amount" type="number" step="0.01" min="0.01" class="form-control mono" placeholder="0.00" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div>
+              <label class="field-label">CATEGORY</label>
+              <input id="form-txn-category" type="text" class="form-control" placeholder="e.g. Cloud Infrastructure, Salary" required>
+            </div>
+            <div>
+              <label class="field-label">PAYMENT METHOD</label>
+              <select id="form-txn-method" class="form-control" required>
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Wire Transfer">Wire Transfer</option>
+                <option value="Corporate Card">Corporate Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="field-label">DESCRIPTION</label>
+            <input id="form-txn-desc" type="text" class="form-control" placeholder="Itemized summary or counterparty details" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div>
+              <label class="field-label">TRANSACTION DATE &amp; TIME</label>
+              <input id="form-txn-date" type="datetime-local" class="form-control mono" required>
+            </div>
+            <div>
+              <label class="field-label">SETTLEMENT STATUS</label>
+              <select id="form-txn-status" class="form-control" required>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Reconciled">Reconciled</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="field-label">AUDIT NOTES (OPTIONAL)</label>
+            <textarea id="form-txn-notes" class="form-textarea" placeholder="Internal voucher number, invoice reference, or compliance tags..."></textarea>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn btn-sm" onclick="closeTxnModal()">CANCEL</button>
+          <button type="submit" id="btn-save-txn" class="btn btn-primary btn-sm">SAVE RECORD</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-auth" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-head">
+        <h3 id="modal-auth-title" class="modal-title">TREASURY AUTHENTICATION</h3>
+        <button class="btn-icon" onclick="closeAuthModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <button id="auth-tab-login" class="btn btn-sm active" style="flex: 1;" onclick="setAuthMode('login')">SIGN IN</button>
+          <button id="auth-tab-register" class="btn btn-sm" style="flex: 1;" onclick="setAuthMode('register')">CREATE ACCOUNT</button>
+        </div>
+
+        <form id="form-auth-login">
+          <div style="margin-bottom: 12px;">
+            <label class="field-label">USERNAME OR EMAIL</label>
+            <input id="login-identifier" type="text" class="form-control mono" placeholder="treasury_admin" required>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label class="field-label">PASSWORD</label>
+            <input id="login-password" type="password" class="form-control mono" placeholder="Password123!" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width: 100%;">AUTHENTICATE SESSION</button>
+        </form>
+
+        <form id="form-auth-register" style="display: none;">
+          <div class="form-grid-2" style="margin-bottom: 12px;">
+            <div>
+              <label class="field-label">USERNAME</label>
+              <input id="reg-username" type="text" class="form-control mono" placeholder="john_treasury" required>
+            </div>
+            <div>
+              <label class="field-label">FULL NAME</label>
+              <input id="reg-fullname" type="text" class="form-control" placeholder="John Vance" required>
+            </div>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label class="field-label">CORPORATE EMAIL</label>
+            <input id="reg-email" type="email" class="form-control mono" placeholder="user@auspify.io" required>
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label class="field-label">PASSWORD (MIN 6 CHARACTERS)</label>
+            <input id="reg-password" type="password" class="form-control mono" placeholder="Minimum 6 characters" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm" style="width: 100%;">REGISTER &amp; INITIALIZE LEDGER</button>
+        </form>
+
+        <div style="padding-top: 14px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span class="mono" style="font-size: 10px; color: var(--text-muted);">ACTIVE DEMO USER AVAILABLE</span>
+          <button type="button" class="btn btn-sm" onclick="populateDemoCredentials()">FILL DEMO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-delete" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width: 420px;">
+      <div class="modal-head">
+        <h3 class="modal-title" style="color: var(--accent-expense);">CONFIRM RECORD EXPUNGE</h3>
+        <button class="btn-icon" onclick="closeDeleteModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.6;">
+          Are you sure you want to permanently delete transaction record <strong id="delete-target-ref" class="mono" style="color: var(--text-primary);"></strong>? This modification will alter cumulative financial calculations immediately.
+        </p>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-sm" onclick="closeDeleteModal()">CANCEL</button>
+        <button type="button" id="btn-confirm-delete" class="btn btn-danger btn-sm">DELETE PERMANENTLY</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="mono">
+        AUSPIFY TREASURY MANAGEMENT SYSTEM // SPECIFICATION AUS-TASK-03
+      </div>
+      <div class="footer-links mono">
+        <a href="/privacy">PRIVACY POLICY</a>
+        <span>/</span>
+        <a href="/terms">TERMS OF SERVICE</a>
+        <span>/</span>
+        <a href="https://treasury.auspify.internal" target="_blank">CUSTOM DOMAIN</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
