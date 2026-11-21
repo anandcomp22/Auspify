@@ -1,0 +1,193 @@
+<!-- Hero Section with Architectural Editorial Hierarchy -->
+<section class="hero-editorial">
+  <div class="container">
+    <div class="hero-meta">
+      <span class="index-tag accent">[ ACADEMIC SPECIFICATION // 2026 ]</span>
+      <span class="index-tag">INSTITUTE OF TECHNOLOGY</span>
+      <span class="index-tag">SYSTEMS & ARCHITECTURE</span>
+    </div>
+
+    <h1 class="hero-title">
+      Engineered Curriculum for Distributed Systems, Compilers, and Cryptography.
+    </h1>
+
+    <p class="hero-lead">
+      A structured Learning Management System providing rigorous coursework, interactive multiple-choice assessments, practical laboratory evaluation, and cryptographically verified completion certificates.
+    </p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.5rem;">
+      <a href="/courses" class="btn btn-primary btn-lg">
+        Explore Course Catalog &rarr;
+      </a>
+      <a href="/verify/AUSPIFY-LMS-2026-88F4A19E" class="btn btn-secondary btn-lg">
+        Verify Academic Credential
+      </a>
+    </div>
+
+    <!-- Live System Metric Board (Zero Fake Metrics) -->
+    <div class="panel" style="background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-hairline); padding-bottom: 0.75rem; margin-bottom: 1.25rem;">
+        <span class="index-tag">[ SYSTEM METRIC TELEMETRY // VERIFIED SQLITE DATABASE ]</span>
+        <span style="font-family: var(--font-mono); font-size: 0.725rem; color: var(--status-success); display: flex; align-items: center; gap: 0.35rem;">
+          <span class="status-dot-active"></span> LIVE DATA
+        </span>
+      </div>
+
+      <div class="grid-cols-4">
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary); line-height: 1;">
+            <%= stats.totalCourses %>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">
+            Published Courses
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary); line-height: 1;">
+            <%= stats.totalLessons %>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">
+            Technical Lessons
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary); line-height: 1;">
+            <%= stats.totalStudents %>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">
+            Registered Students
+          </div>
+        </div>
+
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--accent-primary); line-height: 1;">
+            <%= stats.totalCompletions %>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.35rem;">
+            Completed Modules
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Flagship Course Directory -->
+<section class="section-editorial">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="index-tag accent" style="margin-bottom: 0.5rem;">[ CURRICULUM SELECTION // 01 ]</div>
+        <h2>Flagship Engineering Courses</h2>
+      </div>
+      <a href="/courses" class="btn btn-secondary btn-sm">
+        View All Courses &rarr;
+      </a>
+    </div>
+
+    <div class="grid-cols-3">
+      <% featuredCourses.forEach((c, idx) => { %>
+        <div class="panel" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+          <div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+              <span class="badge badge-accent"><%= c.code %></span>
+              <span class="badge badge-default"><%= c.difficulty %></span>
+            </div>
+
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.75rem;">
+              <a href="/courses/<%= c.slug %>" style="color: inherit; text-decoration: none;">
+                <%= c.title %>
+              </a>
+            </h3>
+
+            <p style="font-size: 0.875rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1.25rem;">
+              <%= c.subtitle || c.description.substring(0, 120) + '...' %>
+            </p>
+          </div>
+
+          <div>
+            <div style="border-top: 1px solid var(--border-hairline); padding-top: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+              <span><%= c.lessons_count %> Lessons</span>
+              <span><%= c.estimated_hours %> Hours</span>
+              <span><%= c.enrolled_count %> Enrolled</span>
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-primary);"><%= c.instructor_name %></div>
+              <div style="font-size: 0.725rem; color: var(--text-muted);"><%= c.instructor_headline %></div>
+            </div>
+
+            <a href="/courses/<%= c.slug %>" class="btn btn-primary" style="width: 100%;">
+              Inspect Syllabus &rarr;
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- System Architecture & Verification Invariants -->
+<section class="section-editorial" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-hairline); border-bottom: 1px solid var(--border-hairline);">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="index-tag" style="margin-bottom: 0.5rem;">[ ARCHITECTURAL INVARIANTS // 02 ]</div>
+        <h2>Built on Rigorous Academic and Security Standards</h2>
+      </div>
+    </div>
+
+    <div class="grid-cols-3">
+      <div class="panel" style="background-color: var(--bg-canvas);">
+        <div class="index-tag accent" style="margin-bottom: 1rem;">[ 01 // LINEAR PROGRESSION ]</div>
+        <h3 style="margin-bottom: 0.75rem;">Granular Lesson Tracking</h3>
+        <p style="font-size: 0.9rem; line-height: 1.6;">
+          Module progression is verified at the individual lesson level. State machines calculate exact completion percentages without approximations, allowing students to seamlessly resume precisely where they left off.
+        </p>
+      </div>
+
+      <div class="panel" style="background-color: var(--bg-canvas);">
+        <div class="index-tag accent" style="margin-bottom: 1rem;">[ 02 // RIGOROUS ASSESSMENTS ]</div>
+        <h3 style="margin-bottom: 0.75rem;">Timed Quizzes & Labs</h3>
+        <p style="font-size: 0.9rem; line-height: 1.6;">
+          Assessments evaluate true technical mastery. Multiple-choice tests feature randomized question banks with rigorous timers, while practical assignments accept full code repositories for faculty rubric grading.
+        </p>
+      </div>
+
+      <div class="panel" style="background-color: var(--bg-canvas);">
+        <div class="index-tag accent" style="margin-bottom: 1rem;">[ 03 // CRYPTOGRAPHIC AUDIT ]</div>
+        <h3 style="margin-bottom: 0.75rem;">Verifiable Credentials</h3>
+        <p style="font-size: 0.9rem; line-height: 1.6;">
+          Upon 100% curriculum completion, the platform generates an immutable certificate with an associated SHA-256 verification hash and public ledger lookup code for academic validation.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="section-editorial">
+  <div class="container">
+    <div class="panel" style="padding: 3.5rem; text-align: center; max-width: 860px; margin: 0 auto; background-color: var(--text-primary); color: #FFFFFF; border-color: var(--text-primary);">
+      <div class="index-tag" style="color: #9DA3AF; margin-bottom: 1rem;">
+        [ ENROLLMENT // OPEN ACADEMIC ACCESS ]
+      </div>
+      <h2 style="color: #FFFFFF; font-size: 2.25rem; margin-bottom: 1rem;">
+        Begin Your Study of Advanced Computer Systems
+      </h2>
+      <p style="color: #C5C8CF; font-size: 1rem; max-width: 600px; margin: 0 auto 2rem auto; line-height: 1.6;">
+        Create an academic profile to enroll in courses, submit laboratory assignments, and earn verified credentials.
+      </p>
+      <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="/auth/register" class="btn btn-accent btn-lg">
+          Create Student Account &rarr;
+        </a>
+        <a href="/courses" class="btn btn-secondary btn-lg" style="background-color: transparent; color: #FFFFFF; border-color: rgba(255,255,255,0.3);">
+          Inspect Curriculum Catalog
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

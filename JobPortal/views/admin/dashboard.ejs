@@ -1,0 +1,225 @@
+<div class="container" style="padding: var(--space-12) 0;">
+  <!-- Header -->
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Platform Administration</h1>
+      <p class="section-subtitle">
+        Central governance console &bull; User permissions, compliance oversight, and listing moderation.
+      </p>
+    </div>
+    <div class="mono-tag" style="background: var(--bg-subtle); padding: 6px 12px; border: 1px solid var(--border-main);">
+      Security Role: SuperAdmin
+    </div>
+  </div>
+
+  <!-- Real Operational Metrics -->
+  <div class="dashboard-stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Registered Users</div>
+      <div class="stat-value"><%= stats.totalUsers %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Active Listings</div>
+      <div class="stat-value"><%= stats.activeJobs %> / <%= stats.totalJobs %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Candidate Inquiries</div>
+      <div class="stat-value"><%= stats.totalApplications %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Hiring Organizations</div>
+      <div class="stat-value"><%= stats.totalEmployers %></div>
+    </div>
+  </div>
+
+  <!-- Section 1: User Management -->
+  <div style="margin-bottom: var(--space-16);">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" style="font-size: var(--font-size-xl);">User Directory &amp; Governance</h2>
+        <p class="section-subtitle">Inspect user accounts, assign roles, or delete inactive entities.</p>
+      </div>
+    </div>
+
+    <!-- User Filter Bar -->
+    <form action="/admin" method="GET" class="card" style="margin-bottom: var(--space-6); padding: var(--space-4);">
+      <div style="display: grid; grid-template-columns: 3fr 2fr 1fr; gap: var(--space-3); align-items: end;">
+        <div>
+          <label class="form-label" for="user_search" style="margin-bottom: 4px;">User Search</label>
+          <input 
+            type="text" 
+            id="user_search" 
+            name="user_search" 
+            class="form-input" 
+            placeholder="Search by name, email, or company"
+            value="<%= filters.user_search || '' %>"
+          >
+        </div>
+
+        <div>
+          <label class="form-label" for="user_role" style="margin-bottom: 4px;">Role Filter</label>
+          <select id="user_role" name="user_role" class="form-select">
+            <option value="">All Platform Roles</option>
+            <option value="seeker" <%= filters.user_role === 'seeker' ? 'selected' : '' %>>Seekers (Candidates)</option>
+            <option value="employer" <%= filters.user_role === 'employer' ? 'selected' : '' %>>Employers (Partners)</option>
+            <option value="admin" <%= filters.user_role === 'admin' ? 'selected' : '' %>>Administrators</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-outline" style="height: 42px;">
+          Filter Users
+        </button>
+      </div>
+    </form>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Entity Name</th>
+              <th>Email Identity</th>
+              <th>Current Role</th>
+              <th>Organization</th>
+              <th>Registered</th>
+              <th style="text-align: right;">Permissions &amp; Deletion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(function(u) { %>
+              <tr>
+                <td>
+                  <strong style="color: var(--color-primary);"><%= u.name %></strong>
+                  <% if (u.title) { %>
+                    <span style="display: block; font-size: var(--font-size-xs); color: var(--text-muted);"><%= u.title %></span>
+                  <% } %>
+                </td>
+                <td>
+                  <span class="mono-tag" style="text-transform: none;"><%= u.email %></span>
+                </td>
+                <td>
+                  <span class="badge badge-<%= u.role === 'admin' ? 'interview' : (u.role === 'employer' ? 'active' : 'pending') %>">
+                    <%= u.role.toUpperCase() %>
+                  </span>
+                </td>
+                <td><%= u.company || 'Individual' %></td>
+                <td>
+                  <span class="mono-tag">
+                    <%= new Date(u.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                  </span>
+                </td>
+                <td style="text-align: right;">
+                  <div style="display: inline-flex; align-items: center; gap: var(--space-2);">
+                    <!-- Change Role Form -->
+                    <form action="/admin/users/<%= u.id %>/role" method="POST" style="display: inline-flex; align-items: center; gap: 4px;">
+                      <select name="role" class="filter-select" style="padding: 4px 6px;">
+                        <option value="seeker" <%= u.role === 'seeker' ? 'selected' : '' %>>Seeker</option>
+                        <option value="employer" <%= u.role === 'employer' ? 'selected' : '' %>>Employer</option>
+                        <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                      </select>
+                      <button type="submit" class="btn btn-outline btn-sm" style="padding: 4px 8px;">Assign</button>
+                    </form>
+
+                    <!-- Delete User Form -->
+                    <% if (u.id !== user.id) { %>
+                      <form action="/admin/users/<%= u.id %>/delete" method="POST" data-confirm="Delete user <%= u.name %>? This will permanently delete their account and associated records." style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm" style="padding: 4px 8px;">Delete</button>
+                      </form>
+                    <% } %>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Job Listing Moderation -->
+  <div>
+    <div class="section-header">
+      <div>
+        <h2 class="section-title" style="font-size: var(--font-size-xl);">Position Moderation &amp; Quality Control</h2>
+        <p class="section-subtitle">Oversee all postings across organizations for policy adherence.</p>
+      </div>
+    </div>
+
+    <!-- Job Filter Bar -->
+    <form action="/admin" method="GET" class="card" style="margin-bottom: var(--space-6); padding: var(--space-4);">
+      <div style="display: flex; gap: var(--space-4); align-items: flex-end;">
+        <div style="flex: 1;">
+          <label class="form-label" for="job_status" style="margin-bottom: 4px;">Listing Status Filter</label>
+          <select id="job_status" name="job_status" class="form-select">
+            <option value="">All Statuses (Active, Closed, Draft)</option>
+            <option value="active" <%= filters.job_status === 'active' ? 'selected' : '' %>>Active</option>
+            <option value="closed" <%= filters.job_status === 'closed' ? 'selected' : '' %>>Closed</option>
+            <option value="draft" <%= filters.job_status === 'draft' ? 'selected' : '' %>>Draft</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-outline" style="height: 42px;">Apply Filter</button>
+      </div>
+    </form>
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Listing Title</th>
+              <th>Publishing Organization</th>
+              <th>Operating Model</th>
+              <th>Submissions</th>
+              <th>State</th>
+              <th style="text-align: right;">Moderation Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% jobs.forEach(function(job) { %>
+              <tr>
+                <td>
+                  <strong style="color: var(--color-primary); display: block;">
+                    <a href="/jobs/<%= job.id %>"><%= job.title %></a>
+                  </strong>
+                  <span style="font-size: var(--font-size-xs); color: var(--text-muted);"><%= job.location %></span>
+                </td>
+                <td>
+                  <strong><%= job.company %></strong>
+                  <span style="display: block; font-size: var(--font-size-xs); color: var(--text-muted);"><%= job.employer_email %></span>
+                </td>
+                <td>
+                  <span class="badge badge-<%= job.work_type %>"><%= job.work_type %></span>
+                </td>
+                <td>
+                  <strong><%= job.applications_count || 0 %></strong>
+                </td>
+                <td>
+                  <span class="badge badge-<%= job.status %>"><%= job.status %></span>
+                </td>
+                <td style="text-align: right;">
+                  <div style="display: inline-flex; align-items: center; gap: var(--space-2);">
+                    <form action="/admin/jobs/<%= job.id %>/status" method="POST" style="display: inline-flex; gap: 4px;">
+                      <select name="status" class="filter-select" style="padding: 4px 6px;">
+                        <option value="active" <%= job.status === 'active' ? 'selected' : '' %>>Active</option>
+                        <option value="closed" <%= job.status === 'closed' ? 'selected' : '' %>>Closed</option>
+                        <option value="draft" <%= job.status === 'draft' ? 'selected' : '' %>>Draft</option>
+                      </select>
+                      <button type="submit" class="btn btn-outline btn-sm" style="padding: 4px 8px;">Update</button>
+                    </form>
+
+                    <form action="/admin/jobs/<%= job.id %>/delete" method="POST" data-confirm="Delete listing '<%= job.title %>'? This will purge all applicant records." style="display: inline;">
+                      <button type="submit" class="btn btn-danger btn-sm" style="padding: 4px 8px;">Purge</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

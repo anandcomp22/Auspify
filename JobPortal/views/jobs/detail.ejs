@@ -1,0 +1,233 @@
+<div class="container" style="padding: var(--space-12) 0;">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: var(--space-6); font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--text-muted);">
+    <a href="/" style="color: var(--text-secondary);">Home</a> / 
+    <a href="/jobs" style="color: var(--text-secondary);">Positions</a> / 
+    <span style="color: var(--color-primary); font-weight: 700;"><%= job.title %></span>
+  </div>
+
+  <div class="job-detail-grid">
+    <!-- Main Specification Column -->
+    <div class="job-detail-main">
+      <div class="job-detail-header">
+        <div class="job-detail-company"><%= job.company %></div>
+        <h1 class="job-detail-title"><%= job.title %></h1>
+        
+        <div style="display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;">
+          <span class="badge badge-<%= job.work_type %>"><%= job.work_type %></span>
+          <span class="tag"><%= job.job_type %></span>
+          <span class="tag"><%= job.experience_level %> seniority</span>
+          <span class="mono-tag" style="margin-left: auto;">
+            Posted <%= new Date(job.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+          </span>
+        </div>
+      </div>
+
+      <!-- Specifications Grid -->
+      <div class="job-spec-grid">
+        <div class="job-spec-item">
+          <span class="job-spec-label">Compensation</span>
+          <span class="job-spec-value">
+            <% if (job.salary_min && job.salary_max) { %>
+              $<%= (job.salary_min / 1000).toFixed(0) %>k - $<%= (job.salary_max / 1000).toFixed(0) %>k <%= job.currency %>
+            <% } else { %>
+              Competitive
+            <% } %>
+          </span>
+        </div>
+
+        <div class="job-spec-item">
+          <span class="job-spec-label">Location Base</span>
+          <span class="job-spec-value"><%= job.location %></span>
+        </div>
+
+        <div class="job-spec-item">
+          <span class="job-spec-label">Listing Status</span>
+          <span class="job-spec-value" style="text-transform: capitalize;"><%= job.status %></span>
+        </div>
+
+        <div class="job-spec-item">
+          <span class="job-spec-label">Applicants</span>
+          <span class="job-spec-value"><%= job.applications_count || 0 %> submitted</span>
+        </div>
+      </div>
+
+      <!-- Description Section -->
+      <div class="job-prose-block">
+        <h2 class="job-prose-title">Position Overview</h2>
+        <div class="job-prose-content"><%= job.description %></div>
+      </div>
+
+      <!-- Requirements Section -->
+      <% if (job.requirements) { %>
+        <div class="job-prose-block">
+          <h2 class="job-prose-title">Candidate Prerequisites & Experience</h2>
+          <div class="job-prose-content"><%= job.requirements %></div>
+        </div>
+      <% } %>
+
+      <!-- Required Proficiencies -->
+      <% if (job.skills) { %>
+        <div class="job-prose-block" style="margin-bottom: 0;">
+          <h2 class="job-prose-title">Primary Technical Proficiencies</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3);">
+            <% job.skills.split(',').forEach(function(s) { %>
+              <span class="tag" style="font-size: var(--font-size-sm); padding: 4px 10px;"><%= s.trim() %></span>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Application / Sidebar Column -->
+    <div>
+      <!-- Role Management Block for Owners & Admins -->
+      <% if (isOwner) { %>
+        <div class="job-sidebar-block" style="border-left: 3px solid var(--color-primary);">
+          <h3 class="job-sidebar-title">Listing Management</h3>
+          <p style="font-size: var(--font-size-xs); color: var(--text-secondary); margin-bottom: var(--space-4);">
+            You have administrative control over this position vacancy.
+          </p>
+          <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+            <a href="/jobs/<%= job.id %>/edit" class="btn btn-primary btn-sm btn-block">Edit Specification</a>
+            <% if (job.status === 'active') { %>
+              <form action="/jobs/<%= job.id %>/close" method="POST" data-confirm="Are you sure you want to close this job listing? It will no longer receive new applications.">
+                <button type="submit" class="btn btn-outline btn-sm btn-block">Close Vacancy</button>
+              </form>
+            <% } %>
+            <form action="/jobs/<%= job.id %>/delete" method="POST" data-confirm="Permanently delete this job and all associated applications? This action cannot be reversed.">
+              <button type="submit" class="btn btn-danger btn-sm btn-block">Purge Listing</button>
+            </form>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Candidate Application Gateway -->
+      <div class="job-sidebar-block">
+        <h3 class="job-sidebar-title">Application Gateway</h3>
+
+        <% if (!user) { %>
+          <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-bottom: var(--space-4);">
+            Sign in with your verified candidate credentials to submit your structured portfolio and track status.
+          </p>
+          <a href="/auth/login" class="btn btn-accent btn-block">Sign In to Apply</a>
+          <a href="/auth/register" class="btn btn-outline btn-block" style="margin-top: var(--space-2);">Create Seeker Account</a>
+
+        <% } else if (user.role === 'seeker') { %>
+          <% if (existingApplication) { %>
+            <div style="padding: var(--space-4); background-color: var(--bg-subtle); border-radius: var(--radius-sharp); border-left: 3px solid var(--color-accent); margin-bottom: var(--space-4);">
+              <div class="mono-tag" style="margin-bottom: var(--space-1);">Application Active</div>
+              <div style="font-size: var(--font-size-sm); font-weight: 700; margin-bottom: var(--space-2);">
+                Status: <span class="badge badge-<%= existingApplication.status %>"><%= existingApplication.status %></span>
+              </div>
+              <p style="font-size: var(--font-size-xs); color: var(--text-muted); margin-bottom: 0;">
+                Submitted on <%= new Date(existingApplication.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>.
+              </p>
+            </div>
+            <a href="/dashboard/seeker" class="btn btn-outline btn-block btn-sm">Inspect in Workspace</a>
+
+          <% } else if (job.status !== 'active') { %>
+            <div class="alert alert-warning" style="margin-bottom: 0;">
+              This position is marked as closed and is not accepting candidate submissions.
+            </div>
+
+          <% } else { %>
+            <form action="/jobs/<%= job.id %>/apply" method="POST" enctype="multipart/form-data">
+              <div class="form-group">
+                <label class="form-label" for="cover_letter">Direct Pitch / Cover Note</label>
+                <textarea 
+                  id="cover_letter" 
+                  name="cover_letter" 
+                  class="form-textarea" 
+                  rows="4" 
+                  required
+                  placeholder="Outline relevant system architectures, codebase experience, and why this role matches your engineering focus."
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="resume-input">
+                  Resume Specification (PDF, DOCX)
+                  <span class="file-name-target" style="display: block; font-weight: 500; color: var(--color-accent); margin-top: 2px;"></span>
+                </label>
+                <input 
+                  type="file" 
+                  id="resume-input" 
+                  name="resume" 
+                  class="form-input" 
+                  accept=".pdf,.doc,.docx,.txt"
+                >
+                <div class="form-help">Max 5MB. Verified format sent directly to hiring team.</div>
+              </div>
+
+              <button type="submit" class="btn btn-accent btn-block">
+                Transmit Application
+              </button>
+            </form>
+
+            <form action="/jobs/<%= job.id %>/save" method="POST" style="margin-top: var(--space-3);">
+              <button type="submit" class="btn btn-outline btn-block btn-sm">
+                <%= isSaved ? 'Remove from Saved' : 'Bookmark Position' %>
+              </button>
+            </form>
+          <% } %>
+
+        <% } else if (user.role === 'employer' && !isOwner) { %>
+          <p style="font-size: var(--font-size-sm); color: var(--text-secondary);">
+            Logged in as employer <strong><%= user.name %></strong>. Applications can only be submitted from candidate accounts.
+          </p>
+        <% } %>
+      </div>
+
+      <!-- Hiring Organization Card -->
+      <div class="job-sidebar-block">
+        <h3 class="job-sidebar-title">Hiring Entity</h3>
+        <strong style="font-size: var(--font-size-base); color: var(--color-primary); display: block; margin-bottom: var(--space-2);">
+          <%= job.company %>
+        </strong>
+        <p style="font-size: var(--font-size-sm); color: var(--text-secondary); line-height: 1.5; margin-bottom: var(--space-3);">
+          <%= job.employer_bio || 'A verified technology organization utilizing HireScope infrastructure for talent acquisition.' %>
+        </p>
+        <div style="font-size: var(--font-size-xs); color: var(--text-muted); font-family: var(--font-family-mono);">
+          Hiring Point: <%= job.employer_name %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Positions Section -->
+  <% if (relatedJobs && relatedJobs.length > 0) { %>
+    <div style="margin-top: var(--space-16); padding-top: var(--space-8); border-top: 1px solid var(--border-main);">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Related Openings</h2>
+          <p class="section-subtitle">Positions with aligned technical profiles or operating models.</p>
+        </div>
+      </div>
+
+      <div class="jobs-grid">
+        <% relatedJobs.forEach(function(rel) { %>
+          <div class="job-card">
+            <div>
+              <div class="job-card-top">
+                <span class="job-company"><%= rel.company %></span>
+                <span class="job-date"><%= new Date(rel.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></span>
+              </div>
+              <h3 class="job-title" style="font-size: var(--font-size-md);">
+                <a href="/jobs/<%= rel.id %>"><%= rel.title %></a>
+              </h3>
+              <div class="job-meta-row">
+                <span class="badge badge-<%= rel.work_type %>"><%= rel.work_type %></span>
+                <span class="tag"><%= rel.job_type %></span>
+              </div>
+              <p class="job-snippet"><%= rel.description %></p>
+            </div>
+            <div style="border-top: 1px solid var(--border-light); padding-top: var(--space-3);">
+              <a href="/jobs/<%= rel.id %>" class="btn btn-outline btn-sm btn-block">Review Opening &rarr;</a>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+</div>

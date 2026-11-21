@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Course Player' %> | Auspify LMS</title>
+  
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/player.css">
+</head>
+<body style="background-color: var(--bg-canvas);">
+  <!-- High Focus Header -->
+  <header style="height: 56px; background-color: var(--text-primary); color: #FFFFFF; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; border-bottom: 1px solid #23252B;">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="/courses/<%= course.slug %>" style="color: #9DA3AF; font-size: 0.85rem; font-family: var(--font-mono); text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
+        &larr; Exit to Course Overview
+      </a>
+      <span style="color: #4A505A;">|</span>
+      <span style="font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; color: #FFFFFF;"><%= course.code %>: <%= course.title %></span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <% if (typeof enrollment !== 'undefined' && enrollment) { %>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #9DA3AF;">PROGRESS: <%= enrollment.progress_percent %>%</span>
+          <div style="width: 120px; height: 6px; background-color: #2D3139; border-radius: 0;">
+            <div style="width: <%= enrollment.progress_percent %>%; height: 100%; background-color: var(--accent-primary);"></div>
+          </div>
+        </div>
+      <% } %>
+
+      <a href="/dashboard" style="color: #C5C8CF; font-size: 0.85rem; font-family: var(--font-mono); text-decoration: none;">
+        Dashboard
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <%- body %>
+  </main>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

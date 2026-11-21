@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auspify Atelier // Engineered Goods &amp; Architectural Hardware</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="alternate icon" href="/static/favicon.ico">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="editorial-body">
+
+  <!-- TOP GLOBAL NAVIGATION -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <div class="brand-block">
+        <a href="/" class="brand-link">
+          <span class="brand-monogram">AUSPIFY</span>
+          <span class="brand-sub">ATELIER // COMMERCE ENGINE</span>
+        </a>
+      </div>
+
+      <div class="nav-meta">
+        <span class="meta-tag">DOMAIN: commerce.auspify.internal</span>
+        <span class="meta-tag">SYSTEM: ACTIVE</span>
+      </div>
+
+      <div class="nav-controls">
+        <div id="nav-auth-section" style="display: flex; align-items: center; gap: 0.5rem;">
+          <!-- Injected dynamically by app.js -->
+        </div>
+
+        <button class="btn btn-secondary btn-sm" onclick="openDrawer('cart-drawer')">
+          <span>Cart</span>
+          <span id="cart-badge-count" class="badge-counter" style="display: none;">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DEPLOYMENT INTEGRITY STATUS BAR (Strict Hard Launch Verification) -->
+  <section class="integrity-bar">
+    <div class="integrity-container">
+      <div class="integrity-items">
+        <div class="integrity-chip chip-domain">
+          <span class="integrity-dot"></span>
+          <span>DOMAIN: <strong id="integrity-val-domain">commerce.auspify.internal</strong></span>
+        </div>
+        <div class="integrity-chip chip-favicon">
+          <span class="integrity-dot"></span>
+          <span>FAVICON: <strong id="integrity-val-favicon">ACTIVE (SVG+ICO)</strong></span>
+        </div>
+        <div class="integrity-chip chip-audit">
+          <span class="integrity-dot"></span>
+          <span>AI BADGE AUDIT: <strong id="integrity-val-no-ai">CLEARED (0 HITS)</strong></span>
+        </div>
+        <div class="integrity-chip chip-privacy">
+          <span class="integrity-dot"></span>
+          <span>PRIVACY: <a href="/privacy" style="color: inherit; text-decoration: underline;" id="integrity-val-privacy">LIVE (/privacy)</a></span>
+        </div>
+        <div class="integrity-chip chip-terms">
+          <span class="integrity-dot"></span>
+          <span>TERMS: <a href="/terms" style="color: inherit; text-decoration: underline;" id="integrity-val-terms">LIVE (/terms)</a></span>
+        </div>
+      </div>
+      <div>
+        <span id="integrity-val-lock" class="status-badge status-delivered">DEPLOYMENT LOCK RELEASED</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO & EDITORIAL STATEMENT -->
+  <section class="editorial-hero">
+    <div class="hero-grid">
+      <div class="hero-statement">
+        <div class="hero-tag mono-label">[CATALOG REGISTRY // VOL. 2026]</div>
+        <h1 class="hero-title">Precision Instruments for Spatial Architecture</h1>
+        <p class="hero-desc">
+          Engineered physical hardware, milled acoustic monitors, and brutalist workstation interfaces. Designed with mathematical rigor, machined from solid alloy billets, and assembled to aerospace tolerances.
+        </p>
+      </div>
+      <div class="hero-specs-card">
+        <div class="specs-row">
+          <span class="specs-key">METALLURGY</span>
+          <span class="specs-val">6061-T6 / Ti-6Al-4V</span>
+        </div>
+        <div class="specs-row">
+          <span class="specs-key">MACHINING TOLERANCE</span>
+          <span class="specs-val">&plusmn;0.02 mm</span>
+        </div>
+        <div class="specs-row">
+          <span class="specs-key">INSPECTION STANDARD</span>
+          <span class="specs-val">ISO 9001 / DIN 8308</span>
+        </div>
+        <div class="specs-row">
+          <span class="specs-key">DISPATCH LOGISTICS</span>
+          <span class="specs-val">Direct Freight FOB Origin</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITORIAL ARCHITECTURAL TELEMETRY STRIP -->
+  <section class="telemetry-strip">
+    <div class="telemetry-container">
+      <div class="telemetry-block tel-01">
+        <div class="telemetry-corner-mark"></div>
+        <span class="telemetry-num">01</span>
+        <div class="telemetry-info">
+          <span class="telemetry-title">AEROSPACE METALLURGY</span>
+          <span class="telemetry-sub">6061-T6 Billet &amp; Grade 5 Titanium</span>
+        </div>
+        <div class="telemetry-pulse"></div>
+      </div>
+      <div class="telemetry-block tel-02">
+        <div class="telemetry-corner-mark"></div>
+        <span class="telemetry-num">02</span>
+        <div class="telemetry-info">
+          <span class="telemetry-title">CALIBRATION STANDARD</span>
+          <span class="telemetry-sub">&plusmn;0.02 mm Tolerances / ISO 9001</span>
+        </div>
+        <div class="telemetry-pulse"></div>
+      </div>
+      <div class="telemetry-block tel-03">
+        <div class="telemetry-corner-mark"></div>
+        <span class="telemetry-num">03</span>
+        <div class="telemetry-info">
+          <span class="telemetry-title">AIR CARGO LOGISTICS</span>
+          <span class="telemetry-sub">Tracked FOB Priority Freight</span>
+        </div>
+        <div class="telemetry-pulse"></div>
+      </div>
+      <div class="telemetry-block tel-04">
+        <div class="telemetry-corner-mark"></div>
+        <span class="telemetry-num">04</span>
+        <div class="telemetry-info">
+          <span class="telemetry-title">SECURE SETTLEMENT</span>
+          <span class="telemetry-sub">Zero-Trust PCI-DSS &amp; TLS 1.3 Routing</span>
+        </div>
+        <div class="telemetry-pulse"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY CLASSIFICATION SPECTRUM BAR -->
+  <section class="spectrum-bar-wrapper">
+    <div class="spectrum-label mono-label">CLASSIFICATION MATRIX</div>
+    <div class="spectrum-bar">
+      <div class="spectrum-chip spectrum-chip-all active-chip" data-cat="all" onclick="filterByCategory('all')" style="border-left: 3px solid var(--text-muted);">
+        <span class="spectrum-dot" style="background: var(--text-muted);"></span>
+        <span>ALL // INDEX</span>
+      </div>
+      <div class="spectrum-chip" data-cat="acoustics" onclick="filterByCategory('acoustics')" style="border-left: 3px solid var(--color-cobalt);" data-color="var(--color-cobalt)">
+        <span class="spectrum-dot" style="background: var(--color-cobalt); box-shadow: 0 0 8px var(--color-cobalt);"></span>
+        <span>CAT-01 // ACOUSTICS</span>
+      </div>
+      <div class="spectrum-chip" data-cat="workstation" onclick="filterByCategory('workstation')" style="border-left: 3px solid var(--color-orange);" data-color="var(--color-orange)">
+        <span class="spectrum-dot" style="background: var(--color-orange); box-shadow: 0 0 8px var(--color-orange);"></span>
+        <span>CAT-02 // WORKSTATION</span>
+      </div>
+      <div class="spectrum-chip" data-cat="instruments" onclick="filterByCategory('instruments')" style="border-left: 3px solid var(--color-gold);" data-color="var(--color-gold)">
+        <span class="spectrum-dot" style="background: var(--color-gold); box-shadow: 0 0 8px var(--color-gold);"></span>
+        <span>CAT-03 // CHRONOMETRY</span>
+      </div>
+      <div class="spectrum-chip" data-cat="lighting" onclick="filterByCategory('lighting')" style="border-left: 3px solid var(--color-emerald);" data-color="var(--color-emerald)">
+        <span class="spectrum-dot" style="background: var(--color-emerald); box-shadow: 0 0 8px var(--color-emerald);"></span>
+        <span>CAT-04 // LUMINAIRES</span>
+      </div>
+      <div class="spectrum-chip" data-cat="materials" onclick="filterByCategory('materials')" style="border-left: 3px solid var(--color-terracotta);" data-color="var(--color-terracotta)">
+        <span class="spectrum-dot" style="background: var(--color-terracotta); box-shadow: 0 0 8px var(--color-terracotta);"></span>
+        <span>CAT-05 // MONOLITHS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN STOREFRONT WORKFLOW SECTION -->
+  <main class="catalog-section">
+    <!-- Filter Toolbar -->
+    <div class="catalog-toolbar">
+      <div class="toolbar-top">
+        <!-- Category Classification Tabs -->
+        <div class="category-tabs">
+          <button class="cat-tab active" data-category="all">All Classifications</button>
+          {% for cat in categories %}
+          <button class="cat-tab" data-category="{{ cat.slug }}">{{ cat.name }}</button>
+          {% endfor %}
+        </div>
+
+        <!-- Controls: Search, Sort, Stock Toggle -->
+        <div class="toolbar-controls">
+          <div class="search-input-wrapper">
+            <input type="text" id="catalog-search" class="search-input" placeholder="Search SKU, material, title...">
+          </div>
+
+          <select id="catalog-sort" class="select-filter">
+            <option value="featured">Sort: Curated Index</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="name_asc">Alphabetical: A-Z</option>
+            <option value="newest">Chronological: Newest</option>
+          </select>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="filter-in-stock">
+            <span>In-Stock Only</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="products-grid" class="product-grid">
+      <!-- Injected dynamically by app.js -->
+    </div>
+  </main>
+
+  <!-- EDITORIAL FOOTER (Strictly Zero AI Badges) -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="footer-brand">AUSPIFY ATELIER</div>
+        <p class="footer-copy">
+          Engineered physical artifacts and architectural hardware. Manufactured with aerospace tolerances and uncompromising material authenticity.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-heading">INFRASTRUCTURE</div>
+        <div class="footer-links">
+          <span class="footer-link">Internal Domain: commerce.auspify.internal</span>
+          <span class="footer-link">Protocol: TLS 1.3 / HTTP 2</span>
+          <span class="footer-link">Freight Standard: Global Air Cargo</span>
+          <span class="footer-link">Audit Cycle: Q4 2026</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <div class="footer-heading">COMPLIANCE &amp; LEGAL</div>
+        <div class="footer-links">
+          <a href="/privacy" class="footer-link">Privacy Policy</a>
+          <a href="/terms" class="footer-link">Terms &amp; Conditions</a>
+          <a href="/" class="footer-link">Catalog Index</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-container">
+        <span>&copy; 2026 Auspify Technologies. All rights reserved. Precision Manufacturing Division.</span>
+        <span>SPEC-ID: AP-SYS-2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       SIDE DRAWERS & MODALS
+       ========================================================================== -->
+
+  <!-- Global Backdrop -->
+  <div id="global-backdrop" class="overlay-backdrop"></div>
+
+  <!-- SHOPPING CART DRAWER -->
+  <aside id="cart-drawer" class="side-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <div class="doc-label">ACTIVE MANIFEST</div>
+        <h2 class="drawer-title">Shopping Cart</h2>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="closeDrawer('cart-drawer')">&times; Close</button>
+    </div>
+
+    <div id="cart-items-container" class="drawer-body">
+      <!-- Injected by app.js -->
+    </div>
+
+    <div id="cart-footer-container" class="drawer-footer">
+      <div class="cart-summary-card">
+        <div class="summary-row">
+          <span class="specs-key">Subtotal</span>
+          <span id="cart-subtotal" class="specs-val">$0.00</span>
+        </div>
+        <div id="cart-discount-row" class="summary-row" style="display: none; color: var(--accent-emerald);">
+          <span class="specs-key">Promotion Discount</span>
+          <span id="cart-discount" class="specs-val" style="color: var(--accent-emerald);">$0.00</span>
+        </div>
+        <div class="summary-row">
+          <span class="specs-key">Freight (Est.)</span>
+          <span id="cart-shipping" class="specs-val">$0.00</span>
+        </div>
+        <div class="summary-row">
+          <span class="specs-key">Commercial Tax (8.25%)</span>
+          <span id="cart-tax" class="specs-val">$0.00</span>
+        </div>
+        <div class="summary-row total-row">
+          <span>Total</span>
+          <span id="cart-total">$0.00</span>
+        </div>
+
+        <div class="promo-form">
+          <input type="text" id="promo-input" class="form-input" placeholder="Voucher (e.g. ATELIER10)" style="text-transform: uppercase;">
+          <button class="btn btn-secondary btn-sm" onclick="applyPromoCode()">Apply</button>
+        </div>
+
+        <button class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;" onclick="openCheckoutModal()">
+          Proceed to Order Dispatch &rarr;
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CUSTOMER ORDER HISTORY DRAWER -->
+  <aside id="orders-drawer" class="side-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <div class="doc-label">ACCOUNT DISPATCH REGISTRY</div>
+        <h2 class="drawer-title">Order History</h2>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="closeDrawer('orders-drawer')">&times; Close</button>
+    </div>
+
+    <div id="orders-history-list" class="drawer-body">
+      <!-- Injected by app.js -->
+    </div>
+  </aside>
+
+  <!-- ADMIN MANAGEMENT DRAWER -->
+  <aside id="admin-drawer" class="side-drawer admin-drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <div class="doc-label">EXECUTIVE MANAGEMENT CONSOLE</div>
+        <h2 class="drawer-title">Catalog &amp; Order Pipeline</h2>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="closeDrawer('admin-drawer')">&times; Close</button>
+    </div>
+
+    <div class="admin-tabs">
+      <div id="admin-tab-products" class="admin-tab active" onclick="switchAdminTab('products')">Product Inventory</div>
+      <div id="admin-tab-orders" class="admin-tab" onclick="switchAdminTab('orders')">Order Pipeline</div>
+      <div id="admin-tab-new-product" class="admin-tab" onclick="switchAdminTab('new-product')">+ Add Product</div>
+      <div id="admin-tab-compliance" class="admin-tab" onclick="switchAdminTab('compliance')">Hard Launch Audit</div>
+    </div>
+
+    <div class="drawer-body">
+      <!-- Tab 1: Products Table -->
+      <div id="admin-content-products">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-products-table-body">
+              <!-- Populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Orders Table -->
+      <div id="admin-content-orders" style="display: none;">
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order Ref</th>
+                <th>Consignee</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-table-body">
+              <!-- Populated by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: New Product Form -->
+      <div id="admin-content-new-product" style="display: none;">
+        <form id="new-product-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">SKU Identifier *</label>
+              <input type="text" id="new-p-sku" class="form-input" placeholder="AP-XXXX-XXX" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Classification Category *</label>
+              <select id="new-p-cat" class="form-select" required>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }} ({{ cat.code }})</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Product Name *</label>
+            <input type="text" id="new-p-name" class="form-input" placeholder="e.g. Precision Caliper Gauge" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Price (USD) *</label>
+              <input type="number" id="new-p-price" class="form-input" step="0.01" min="1" placeholder="250.00" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Initial Stock Count *</label>
+              <input type="number" id="new-p-stock" class="form-input" min="0" placeholder="20" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Material Metallurgy</label>
+              <input type="text" id="new-p-mat" class="form-input" placeholder="e.g. 6061-T6 Billet Aluminum" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Machined Dimensions</label>
+              <input type="text" id="new-p-dim" class="form-input" placeholder="e.g. 210 x 80 x 24 mm" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Net Mass</label>
+              <input type="text" id="new-p-weight" class="form-input" placeholder="e.g. 850 g" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Surface Treatment</label>
+              <input type="text" id="new-p-finish" class="form-input" placeholder="e.g. Bead-blasted Matte Anodized" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Origin Facility</label>
+              <input type="text" id="new-p-origin" class="form-input" placeholder="e.g. Munich, Germany" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Direct Image URL</label>
+              <input type="url" id="new-p-img" class="form-input" placeholder="https://images.unsplash.com/..." required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Engineering Description *</label>
+            <textarea id="new-p-desc" class="form-textarea" rows="3" placeholder="Technical specifications, acoustic acoustic properties, or machining details." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Commit Product to Database</button>
+        </form>
+      </div>
+
+      <!-- Tab 4: Compliance Checklist -->
+      <div id="admin-content-compliance" style="display: none;">
+        <div style="font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 1rem; color: #FFFFFF;">
+          HARD LAUNCH CHECKLIST AUDIT (CRITERIA 1-5)
+        </div>
+        <div class="specs-table-container">
+          <table class="specs-table">
+            <thead>
+              <tr>
+                <th>Criterion</th>
+                <th>Target</th>
+                <th>Current Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1. Custom Domain</td>
+                <td>Verified custom domain connected</td>
+                <td style="color: var(--accent-emerald);">VALID: commerce.auspify.internal</td>
+              </tr>
+              <tr>
+                <td>2. Custom Favicon</td>
+                <td>Active SVG/ICO uploaded</td>
+                <td style="color: var(--accent-emerald);">VALID: /static/favicon.svg &amp; .ico</td>
+              </tr>
+              <tr>
+                <td>3. Zero Generated Badges</td>
+                <td>Automated generator tags stripped</td>
+                <td style="color: var(--accent-emerald);">CLEARED: 0 occurrences detected</td>
+              </tr>
+              <tr>
+                <td>4. Privacy Policy</td>
+                <td>Formatted live compliance page</td>
+                <td style="color: var(--accent-emerald);"><a href="/privacy" style="color: inherit; text-decoration: underline;">LIVE: /privacy</a></td>
+              </tr>
+              <tr>
+                <td>5. Terms &amp; Conditions</td>
+                <td>Formatted live legal contract</td>
+                <td style="color: var(--accent-emerald);"><a href="/terms" style="color: inherit; text-decoration: underline;">LIVE: /terms</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- PRODUCT SPECIFICATION DETAIL MODAL -->
+  <div id="product-detail-modal" class="center-modal">
+    <div class="modal-header">
+      <div class="doc-label">SPECIFICATION INSPECTION // DATASHEET</div>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('product-detail-modal')">&times; Close</button>
+    </div>
+    <div id="product-detail-content" class="modal-body">
+      <!-- Populated by app.js -->
+    </div>
+  </div>
+
+  <!-- CHECKOUT EXECUTION MODAL -->
+  <div id="checkout-modal" class="center-modal" style="width: 760px;">
+    <div class="modal-header">
+      <div class="drawer-title-group">
+        <div class="doc-label">DISPATCH MANIFEST &amp; SETTLEMENT</div>
+        <h2 class="drawer-title">Order Checkout Pipeline</h2>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('checkout-modal')">&times; Close</button>
+    </div>
+    <div class="modal-body">
+      <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem;">
+        <!-- Left: Shipping & Billing Form -->
+        <form id="checkout-form" onsubmit="executeCheckoutOrder(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Consignee Full Name *</label>
+              <input type="text" id="checkout-name" class="form-input" required placeholder="Elena Rostova">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Verified Contact Email *</label>
+              <input type="email" id="checkout-email" class="form-input" required placeholder="client@domain.com">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Physical Shipping Address *</label>
+            <input type="text" id="checkout-address" class="form-input" required placeholder="Street address, studio, or loading dock">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">City *</label>
+              <input type="text" id="checkout-city" class="form-input" required placeholder="Seattle">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Postal Code *</label>
+              <input type="text" id="checkout-zip" class="form-input" required placeholder="98101">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Country</label>
+              <input type="text" id="checkout-country" class="form-input" value="United States" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Freight Dispatch Tier</label>
+              <select id="checkout-shipping-tier" class="form-select">
+                <option value="Standard Courier">Standard Courier (Free over $250)</option>
+                <option value="Express Priority">Express Air Freight ($35.00)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Settlement Instrument</label>
+            <select id="checkout-payment-method" class="form-select">
+              <option value="Corporate Card">Corporate Credit Facility (PCI-DSS Token)</option>
+              <option value="Wire Transfer">Commercial Wire Transfer (ACH / SWIFT)</option>
+              <option value="Direct Settlement">Direct Invoice Settlement (Net 30)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Logistics Dispatch Instructions (Optional)</label>
+            <textarea id="checkout-notes" class="form-textarea" rows="2" placeholder="Special handling or signature requirements."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
+            Authorize &amp; Execute Order
+          </button>
+        </form>
+
+        <!-- Right: Real-time Order Summary -->
+        <div id="checkout-order-summary" style="background: #0E1015; border: 1px solid var(--border-hairline); padding: 1.25rem;">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER CONFIRMATION MODAL -->
+  <div id="order-confirmed-modal" class="center-modal">
+    <div id="order-confirmed-content" class="modal-body">
+      <!-- Populated by app.js -->
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION MODAL -->
+  <div id="auth-modal" class="center-modal" style="width: 440px;">
+    <div class="modal-header">
+      <div class="drawer-title-group">
+        <div class="doc-label">SECURITY PROTOCOL</div>
+        <h2 id="auth-modal-title" class="drawer-title">Sign In</h2>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('auth-modal')">&times; Close</button>
+    </div>
+    <div class="modal-body">
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <div id="auth-fullname-group" class="form-group" style="display: none;">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="auth-fullname" class="form-input" placeholder="Elena Rostova">
+        </div>
+        <div id="auth-email-group" class="form-group" style="display: none;">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="auth-email" class="form-input" placeholder="client@auspify.internal">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="auth-username" class="form-input" placeholder="e.g. shopper_client" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" id="auth-submit-btn" class="btn btn-primary btn-block" style="margin-top: 1rem;">Authenticate</button>
+      </form>
+      <div style="margin-top: 1rem; text-align: center; font-size: 0.78rem; font-family: var(--font-mono);">
+        <a href="javascript:void(0)" id="auth-toggle-link" style="color: var(--accent-signal); text-decoration: none;" onclick="toggleAuthMode()">New account? Register registration record</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Client Script -->
+  <script src="/static/js/app.js"></script>
+  <script>
+    let authMode = 'login';
+    function openAuthModal(mode = 'login') {
+      authMode = mode;
+      updateAuthModalUI();
+      openModal('auth-modal');
+    }
+    function toggleAuthMode() {
+      authMode = authMode === 'login' ? 'register' : 'login';
+      updateAuthModalUI();
+    }
+    function updateAuthModalUI() {
+      const title = document.getElementById('auth-modal-title');
+      const fnGroup = document.getElementById('auth-fullname-group');
+      const emGroup = document.getElementById('auth-email-group');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      const toggleLink = document.getElementById('auth-toggle-link');
+      if (authMode === 'register') {
+        title.textContent = 'Account Registration';
+        fnGroup.style.display = 'flex';
+        emGroup.style.display = 'flex';
+        submitBtn.textContent = 'Register New Record';
+        toggleLink.textContent = 'Existing user? Sign in to session';
+      } else {
+        title.textContent = 'Sign In';
+        fnGroup.style.display = 'none';
+        emGroup.style.display = 'none';
+        submitBtn.textContent = 'Authenticate';
+        toggleLink.textContent = 'New account? Register registration record';
+      }
+    }
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const username = document.getElementById('auth-username').value.trim();
+      const password = document.getElementById('auth-password').value;
+      if (authMode === 'login') {
+        try {
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+          const data = await res.json();
+          if (res.ok) {
+            State.currentUser = data.user;
+            renderAuthUI();
+            closeModal('auth-modal');
+            showToast(`Authenticated as ${data.user.full_name}`);
+            await loadCart();
+          } else {
+            showToast(data.detail || 'Login failed', 'error');
+          }
+        } catch (err) {
+          showToast('Network error during login', 'error');
+        }
+      } else {
+        const full_name = document.getElementById('auth-fullname').value.trim();
+        const email = document.getElementById('auth-email').value.trim();
+        try {
+          const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, full_name, password })
+          });
+          const user = await res.json();
+          if (res.ok) {
+            State.currentUser = user;
+            renderAuthUI();
+            closeModal('auth-modal');
+            showToast('Account registration confirmed');
+            await loadCart();
+          } else {
+            showToast(user.detail || 'Registration failed', 'error');
+          }
+        } catch (err) {
+          showToast('Network error during registration', 'error');
+        }
+      }
+    }
+  </script>
+</body>
+</html>

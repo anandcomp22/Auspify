@@ -1,0 +1,173 @@
+<div class="container" style="padding: var(--space-12) 0;">
+  <!-- Header -->
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Employer Workspace</h1>
+      <p class="section-subtitle">
+        <%= user.company || 'Organization' %> &bull; Hiring Control Dashboard
+      </p>
+    </div>
+    <div style="display: flex; gap: var(--space-3);">
+      <a href="/jobs/create" class="btn btn-accent btn-sm">Publish Position</a>
+      <a href="/auth/profile" class="btn btn-outline btn-sm">Entity Profile</a>
+    </div>
+  </div>
+
+  <!-- Operational Metrics -->
+  <div class="dashboard-stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Active Listings</div>
+      <div class="stat-value"><%= stats.activeJobs %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Candidate Submissions</div>
+      <div class="stat-value"><%= stats.totalApplications %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Closed / Filled</div>
+      <div class="stat-value"><%= stats.closedJobs %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Total Published</div>
+      <div class="stat-value"><%= stats.totalJobs %></div>
+    </div>
+  </div>
+
+  <!-- Managed Positions Table -->
+  <div style="margin-bottom: var(--space-12);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-4);">
+      <h2 style="font-size: var(--font-size-xl);">Managed Position Openings</h2>
+      <span class="mono-tag"><%= jobs.length %> Total Listings</span>
+    </div>
+
+    <% if (jobs && jobs.length > 0) { %>
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Position Title</th>
+                <th>Work Model</th>
+                <th>Seniority</th>
+                <th>Submissions</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th style="text-align: right;">Listing Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% jobs.forEach(function(job) { %>
+                <tr>
+                  <td>
+                    <strong style="color: var(--color-primary); display: block;">
+                      <a href="/jobs/<%= job.id %>"><%= job.title %></a>
+                    </strong>
+                    <span style="font-size: var(--font-size-xs); color: var(--text-muted);"><%= job.location %></span>
+                  </td>
+                  <td>
+                    <span class="badge badge-<%= job.work_type %>"><%= job.work_type %></span>
+                  </td>
+                  <td><span class="tag"><%= job.experience_level %></span></td>
+                  <td>
+                    <strong><%= job.app_count || 0 %></strong>
+                    <span style="font-size: var(--font-size-xs); color: var(--text-muted);">candidates</span>
+                  </td>
+                  <td>
+                    <span class="badge badge-<%= job.status %>"><%= job.status %></span>
+                  </td>
+                  <td>
+                    <span class="mono-tag">
+                      <%= new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %>
+                    </span>
+                  </td>
+                  <td style="text-align: right;">
+                    <div style="display: inline-flex; gap: var(--space-1); align-items: center;">
+                      <a href="/jobs/<%= job.id %>/edit" class="btn btn-outline btn-sm">Edit</a>
+                      <% if (job.status === 'active') { %>
+                        <form action="/jobs/<%= job.id %>/close" method="POST" style="display: inline;">
+                          <button type="submit" class="btn btn-ghost btn-sm">Close</button>
+                        </form>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <h3 class="empty-state-title">No Positions Published</h3>
+        <p class="empty-state-desc">
+          Deploy your first engineering or design position listing to begin receiving direct, qualified applicant submissions.
+        </p>
+        <a href="/jobs/create" class="btn btn-accent">Publish Your First Opening</a>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Recent Candidate Inquiries -->
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-4);">
+      <h2 style="font-size: var(--font-size-xl);">Recent Candidate Inquiries</h2>
+      <span class="mono-tag"><%= recentApplications.length %> Inquiries Listed</span>
+    </div>
+
+    <% if (recentApplications && recentApplications.length > 0) { %>
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Candidate</th>
+                <th>Target Position</th>
+                <th>Candidate Location</th>
+                <th>Received</th>
+                <th>Review Status</th>
+                <th style="text-align: right;">Review</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentApplications.forEach(function(app) { %>
+                <tr>
+                  <td>
+                    <strong style="color: var(--color-primary); display: block;"><%= app.candidate_name %></strong>
+                    <span style="font-size: var(--font-size-xs); color: var(--text-muted);"><%= app.candidate_email %></span>
+                  </td>
+                  <td>
+                    <a href="/jobs/<%= app.job_id %>" style="font-weight: 600;"><%= app.job_title %></a>
+                  </td>
+                  <td><%= app.candidate_location || 'Not Specified' %></td>
+                  <td>
+                    <span class="mono-tag">
+                      <%= new Date(app.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge badge-<%= app.status %>"><%= app.status %></span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="/dashboard/applications/<%= app.id %>" class="btn btn-primary btn-sm">
+                      Inspect Dossier &rarr;
+                    </a>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <h3 class="empty-state-title">No Candidate Inquiries Yet</h3>
+        <p class="empty-state-desc">
+          When candidates submit direct applications to your positions, their credentials and cover notes will appear here.
+        </p>
+      </div>
+    <% } %>
+  </div>
+</div>

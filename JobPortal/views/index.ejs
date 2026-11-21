@@ -1,0 +1,172 @@
+<!-- Homepage Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span>Structural Recruitment Network</span>
+        </div>
+        <h1 class="hero-title">
+          Engineered career connections for technical practitioners.
+        </h1>
+        <p class="hero-lead">
+          HireScope eliminates recruitment noise. We connect verified engineering and design talent directly with engineering teams through transparent compensation, verified requirements, and structured application pipelines.
+        </p>
+        <div class="hero-actions">
+          <a href="/jobs" class="btn btn-primary btn-lg">Browse Open Positions</a>
+          <a href="/jobs/create" class="btn btn-outline btn-lg">Post an Opening</a>
+        </div>
+      </div>
+
+      <div class="hero-stats-panel">
+        <div class="hero-stat-item">
+          <span class="hero-stat-value"><%= stats.totalJobs %></span>
+          <span class="hero-stat-label">Active Positions</span>
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-value"><%= stats.totalCompanies %></span>
+          <span class="hero-stat-label">Verified Organizations</span>
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-value"><%= stats.totalApplications %></span>
+          <span class="hero-stat-label">Applications Processed</span>
+        </div>
+        <div class="hero-stat-item">
+          <span class="hero-stat-value">100%</span>
+          <span class="hero-stat-label">Direct Employer Pipeline</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Direct Search Bar -->
+<section style="padding: var(--space-8) 0; background-color: var(--bg-canvas);">
+  <div class="container">
+    <form action="/jobs" method="GET" class="search-panel">
+      <div class="search-form-grid">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">Position, Stack, or Keyword</label>
+          <input type="text" name="q" class="form-input" placeholder="e.g. Distributed Systems, Rust, TypeScript, Kafka">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label class="form-label">Location or Work Model</label>
+          <input type="text" name="location" class="form-input" placeholder="e.g. Remote, San Francisco, Denver">
+        </div>
+        <button type="submit" class="btn btn-accent" style="height: 44px;">
+          Search Database
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Featured Job Listings -->
+<section style="padding: var(--space-10) 0; background-color: var(--bg-canvas);">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Verified Openings</h2>
+        <p class="section-subtitle">Real-time vacancies curated directly from hiring engineering partners.</p>
+      </div>
+      <a href="/jobs" class="btn btn-outline btn-sm">View All (<%= stats.totalJobs %>)</a>
+    </div>
+
+    <% if (featuredJobs && featuredJobs.length > 0) { %>
+      <div class="jobs-grid">
+        <% featuredJobs.forEach(function(job) { %>
+          <div class="job-card">
+            <div>
+              <div class="job-card-top">
+                <span class="job-company"><%= job.company %></span>
+                <span class="job-date"><%= new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></span>
+              </div>
+              <h3 class="job-title">
+                <a href="/jobs/<%= job.id %>"><%= job.title %></a>
+              </h3>
+              <div class="job-meta-row">
+                <span class="badge badge-<%= job.work_type %>"><%= job.work_type %></span>
+                <span class="tag"><%= job.job_type %></span>
+                <span class="tag"><%= job.experience_level %></span>
+              </div>
+              <% if (job.salary_min && job.salary_max) { %>
+                <div class="job-salary" style="margin-bottom: var(--space-3);">
+                  $<%= (job.salary_min / 1000).toFixed(0) %>k - $<%= (job.salary_max / 1000).toFixed(0) %>k <%= job.currency %>
+                </div>
+              <% } %>
+              <p class="job-snippet"><%= job.description %></p>
+            </div>
+
+            <% if (job.skills) { %>
+              <div class="job-tags">
+                <% job.skills.split(',').slice(0, 4).forEach(function(s) { %>
+                  <span class="tag"><%= s.trim() %></span>
+                <% }); %>
+              </div>
+            <% } %>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <h3 class="empty-state-title">No Active Listings Currently Available</h3>
+        <p class="empty-state-desc">New positions are indexed daily as verified employers publish their openings.</p>
+        <a href="/jobs/create" class="btn btn-primary">Publish the First Opening</a>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- Architectural Methodology (Behance-inspired structural layout) -->
+<section style="padding: var(--space-16) 0; background-color: var(--bg-surface); border-top: 1px solid var(--border-main);">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Platform Architecture</h2>
+        <p class="section-subtitle">A high-fidelity framework replacing conventional recruitment agencies.</p>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-8);">
+      <div class="card">
+        <div class="mono-tag" style="margin-bottom: var(--space-3);">Module 01</div>
+        <h3 style="font-size: var(--font-size-md); margin-bottom: var(--space-2);">Calibrated Role Taxonomy</h3>
+        <p style="font-size: var(--font-size-sm); color: var(--text-secondary);">
+          Job descriptions are bound to strict schema standards: transparent compensation figures, verified work modes, and explicit technical proficiencies.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="mono-tag" style="margin-bottom: var(--space-3);">Module 02</div>
+        <h3 style="font-size: var(--font-size-md); margin-bottom: var(--space-2);">Direct Candidate Submissions</h3>
+        <p style="font-size: var(--font-size-sm); color: var(--text-secondary);">
+          Engineers and designers interface directly with hiring decision makers. Cover notes and structured resumes bypass third-party intermediary parsing.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="mono-tag" style="margin-bottom: var(--space-3);">Module 03</div>
+        <h3 style="font-size: var(--font-size-md); margin-bottom: var(--space-2);">Transparent Lifecycle Tracking</h3>
+        <p style="font-size: var(--font-size-sm); color: var(--text-secondary);">
+          Candidates inspect application status changes in real time across defined checkpoints: Reviewing, Shortlisted, Technical Interview, and Decision.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call to Action Banner -->
+<section style="padding: var(--space-16) 0; background-color: var(--bg-canvas); border-top: 1px solid var(--border-main);">
+  <div class="container container-narrow" style="text-align: center;">
+    <h2 style="font-size: clamp(1.75rem, 3.5vw, 2.5rem); margin-bottom: var(--space-4);">
+      Ready to deploy your next career transition?
+    </h2>
+    <p style="font-size: var(--font-size-md); color: var(--text-secondary); margin-bottom: var(--space-8);">
+      Join verified engineering teams and practitioners building resilient digital products.
+    </p>
+    <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
+      <a href="/auth/register" class="btn btn-accent btn-lg">Create Free Account</a>
+      <a href="/jobs" class="btn btn-outline btn-lg">Explore All Jobs</a>
+    </div>
+  </div>
+</section>

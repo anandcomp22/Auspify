@@ -1,0 +1,20 @@
+<div class="container section-editorial">
+  <div class="panel" style="max-width: 680px; margin: 3rem auto; text-align: center; padding: 3.5rem 2.5rem;">
+    <div class="index-tag" style="margin-bottom: 1rem; color: var(--status-danger);">
+      [ ERROR CODE // <%= statusCode || 404 %> ]
+    </div>
+    
+    <h1 style="font-size: 2.25rem; margin-bottom: 1rem;">
+      <%= title || 'Resource Exception Encountered' %>
+    </h1>
+    
+    <p style="font-size: 1rem; margin-bottom: 2rem; color: var(--text-secondary);">
+      <%= message || 'The requested operation could not be resolved against the curriculum routing table.' %>
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 1rem;">
+      <a href="/" class="btn btn-primary">Return to Homepage</a>
+      <a href="/courses" class="btn btn-secondary">Browse Course Directory</a>
+    </div>
+  </div>
+</div>

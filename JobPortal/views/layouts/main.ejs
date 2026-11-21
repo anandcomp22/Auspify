@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'HireScope - Professional Career Infrastructure' %></title>
+  <meta name="description" content="Direct, high-signal recruitment infrastructure connecting senior engineering and design practitioners with pioneering teams.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Inter Display & Sans via Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('../partials/header') %>
+
+  <% if (flash && flash.message) { %>
+    <div class="container alert-container">
+      <div class="alert alert-<%= flash.type || 'info' %>">
+        <span><%= flash.message %></span>
+        <button type="button" class="alert-dismiss" aria-label="Dismiss">&times;</button>
+      </div>
+    </div>
+  <% } %>
+
+  <main>
+    <%- body %>
+  </main>
+
+  <%- include('../partials/footer') %>
+
+  <!-- Application Interaction Scripts -->
+  <script src="/js/app.js"></script>
+</body>
+</html>

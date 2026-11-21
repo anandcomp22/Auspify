@@ -1,0 +1,152 @@
+<div class="container container-narrow" style="padding: var(--space-12) 0;">
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Profile Settings</h1>
+      <p class="section-subtitle">Manage your public presence, verified credentials, and notification parameters.</p>
+    </div>
+    <span class="badge badge-<%= profileUser.role === 'admin' ? 'closed' : 'active' %>">
+      <%= profileUser.role.toUpperCase() %>
+    </span>
+  </div>
+
+  <!-- Profile Completion Tracker -->
+  <div class="card" style="margin-bottom: var(--space-8);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <span class="form-label" style="margin-bottom: 0;">Profile Calibration</span>
+      <span style="font-size: var(--font-size-sm); font-weight: 750; color: var(--color-accent);"><%= profileCompletion %>% Completed</span>
+    </div>
+    <div class="progress-container">
+      <div class="progress-fill" style="width: <%= profileCompletion %>%;"></div>
+    </div>
+    <div style="font-size: var(--font-size-xs); color: var(--text-muted); margin-top: var(--space-2);">
+      Complete technical skills, verified location, and overview bio to optimize hiring match relevance.
+    </div>
+  </div>
+
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert alert-error">
+      <div>
+        <% errors.forEach(function(e) { %>
+          <div><%= e.msg %></div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="card">
+    <form action="/auth/profile" method="POST">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            class="form-input" 
+            value="<%= profileUser.name %>" 
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Account Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            class="form-input" 
+            value="<%= profileUser.email %>" 
+            disabled 
+            style="background-color: var(--bg-subtle);"
+          >
+          <div class="form-help">Email address is permanently bound to account authentication.</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+        <div class="form-group">
+          <label class="form-label" for="title">
+            <%= profileUser.role === 'employer' ? 'Organizational Title' : 'Primary Professional Title' %>
+          </label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            class="form-input" 
+            value="<%= profileUser.title || '' %>" 
+            placeholder="e.g. Senior Distributed Systems Engineer"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="location">Location / Timezone</label>
+          <input 
+            type="text" 
+            id="location" 
+            name="location" 
+            class="form-input" 
+            value="<%= profileUser.location || '' %>" 
+            placeholder="e.g. San Francisco, CA or Remote (UTC-5)"
+          >
+        </div>
+      </div>
+
+      <% if (profileUser.role === 'employer') { %>
+        <div class="form-group">
+          <label class="form-label" for="company">Company / Entity Name</label>
+          <input 
+            type="text" 
+            id="company" 
+            name="company" 
+            class="form-input" 
+            value="<%= profileUser.company || '' %>"
+          >
+        </div>
+      <% } %>
+
+      <div class="form-group">
+        <label class="form-label" for="phone">Phone Contact</label>
+        <input 
+          type="text" 
+          id="phone" 
+          name="phone" 
+          class="form-input" 
+          value="<%= profileUser.phone || '' %>" 
+          placeholder="e.g. +1 (555) 019-2831"
+        >
+      </div>
+
+      <% if (profileUser.role === 'seeker') { %>
+        <div class="form-group">
+          <label class="form-label" for="skills">Technical Proficiencies (Comma Separated)</label>
+          <input 
+            type="text" 
+            id="skills" 
+            name="skills" 
+            class="form-input" 
+            value="<%= profileUser.skills || '' %>" 
+            placeholder="e.g. Go, Rust, Docker, Kubernetes, PostgreSQL, gRPC"
+          >
+          <div class="form-help">These skills are indexed by employers for automated match filtering.</div>
+        </div>
+      <% } %>
+
+      <div class="form-group">
+        <label class="form-label" for="bio">
+          <%= profileUser.role === 'employer' ? 'Company Mission & Technical Focus' : 'Professional Biography' %>
+        </label>
+        <textarea 
+          id="bio" 
+          name="bio" 
+          class="form-textarea" 
+          rows="4"
+          placeholder="Summarize engineering expertise, previous system architectures, or technical team objectives."
+        ><%= profileUser.bio || '' %></textarea>
+      </div>
+
+      <div class="card-footer">
+        <a href="/dashboard" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-primary">Save Profile Details</button>
+      </div>
+    </form>
+  </div>
+</div>

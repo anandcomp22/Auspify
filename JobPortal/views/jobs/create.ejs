@@ -1,0 +1,185 @@
+<div class="container container-narrow" style="padding: var(--space-12) 0;">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: var(--space-6); font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--text-muted);">
+    <a href="/dashboard" style="color: var(--text-secondary);">Workspace</a> / 
+    <span style="color: var(--color-primary); font-weight: 700;">Publish Opening</span>
+  </div>
+
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Publish Engineering Position</h1>
+      <p class="section-subtitle">Define structural role specifications and candidate qualification criteria.</p>
+    </div>
+  </div>
+
+  <% if (errors && errors.length > 0) { %>
+    <div class="alert alert-error">
+      <div>
+        <% errors.forEach(function(e) { %>
+          <div><%= e.msg %></div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="card">
+    <form action="/jobs/create" method="POST">
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-4);">
+        <div class="form-group">
+          <label class="form-label" for="title">Position Title</label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            class="form-input" 
+            required 
+            placeholder="e.g. Senior Distributed Systems Engineer"
+            value="<%= oldInput.title || '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="company">Company Entity</label>
+          <input 
+            type="text" 
+            id="company" 
+            name="company" 
+            class="form-input" 
+            required 
+            value="<%= oldInput.company || (employer ? employer.company : '') %>"
+          >
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4);">
+        <div class="form-group">
+          <label class="form-label" for="location">Location Base</label>
+          <input 
+            type="text" 
+            id="location" 
+            name="location" 
+            class="form-input" 
+            required 
+            placeholder="e.g. Remote, San Francisco, CA"
+            value="<%= oldInput.location || '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="work_type">Work Operating Model</label>
+          <select id="work_type" name="work_type" class="form-select" required>
+            <option value="remote" <%= oldInput.work_type === 'remote' ? 'selected' : '' %>>Remote</option>
+            <option value="hybrid" <%= oldInput.work_type === 'hybrid' ? 'selected' : '' %>>Hybrid</option>
+            <option value="onsite" <%= oldInput.work_type === 'onsite' ? 'selected' : '' %>>Onsite</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="job_type">Employment Model</label>
+          <select id="job_type" name="job_type" class="form-select" required>
+            <option value="full-time" <%= oldInput.job_type === 'full-time' ? 'selected' : '' %>>Full-Time</option>
+            <option value="contract" <%= oldInput.job_type === 'contract' ? 'selected' : '' %>>Contract</option>
+            <option value="part-time" <%= oldInput.job_type === 'part-time' ? 'selected' : '' %>>Part-Time</option>
+            <option value="internship" <%= oldInput.job_type === 'internship' ? 'selected' : '' %>>Internship</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: var(--space-4);">
+        <div class="form-group">
+          <label class="form-label" for="experience_level">Seniority Level</label>
+          <select id="experience_level" name="experience_level" class="form-select">
+            <option value="entry" <%= oldInput.experience_level === 'entry' ? 'selected' : '' %>>Entry-Level</option>
+            <option value="mid" <%= oldInput.experience_level === 'mid' ? 'selected' : '' %>>Mid-Level</option>
+            <option value="senior" <%= (!oldInput.experience_level || oldInput.experience_level === 'senior') ? 'selected' : '' %>>Senior</option>
+            <option value="lead" <%= oldInput.experience_level === 'lead' ? 'selected' : '' %>>Lead / Staff</option>
+            <option value="executive" <%= oldInput.experience_level === 'executive' ? 'selected' : '' %>>Executive</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="salary_min">Min Compensation</label>
+          <input 
+            type="number" 
+            id="salary_min" 
+            name="salary_min" 
+            class="form-input" 
+            placeholder="e.g. 150000"
+            value="<%= oldInput.salary_min || '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="salary_max">Max Compensation</label>
+          <input 
+            type="number" 
+            id="salary_max" 
+            name="salary_max" 
+            class="form-input" 
+            placeholder="e.g. 195000"
+            value="<%= oldInput.salary_max || '' %>"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="currency">Currency</label>
+          <select id="currency" name="currency" class="form-select">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="CAD">CAD ($)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="skills">Indexed Tech Stack & Skills (Comma Separated)</label>
+        <input 
+          type="text" 
+          id="skills" 
+          name="skills" 
+          class="form-input" 
+          placeholder="e.g. Go, Rust, Raft, Distributed Systems, Docker, Linux Perf"
+          value="<%= oldInput.skills || '' %>"
+        >
+        <div class="form-help">Enables candidate keyword matching and faceted discovery.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description">Position Responsibilities & Mission</label>
+        <textarea 
+          id="description" 
+          name="description" 
+          class="form-textarea" 
+          rows="6" 
+          required
+          placeholder="Detail architectural objectives, day-to-day engineering expectations, and system context."
+        ><%= oldInput.description || '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="requirements">Prerequisites & Qualification Criteria</label>
+        <textarea 
+          id="requirements" 
+          name="requirements" 
+          class="form-textarea" 
+          rows="5"
+          placeholder="Specify production experience requirements, tooling proficiency, and codebase track records."
+        ><%= oldInput.requirements || '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="status">Publication Mode</label>
+        <select id="status" name="status" class="form-select" style="max-width: 260px;">
+          <option value="active" <%= (!oldInput.status || oldInput.status === 'active') ? 'selected' : '' %>>Publish Immediately (Active)</option>
+          <option value="draft" <%= oldInput.status === 'draft' ? 'selected' : '' %>>Save as Internal Draft</option>
+        </select>
+      </div>
+
+      <div class="card-footer">
+        <a href="/dashboard" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn btn-accent btn-lg">Deploy Job Listing</button>
+      </div>
+    </form>
+  </div>
+</div>

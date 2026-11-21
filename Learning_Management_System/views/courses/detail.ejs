@@ -1,0 +1,265 @@
+<div class="container section-editorial">
+  <!-- Course Breadcrumb & Index -->
+  <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+    <a href="/courses" style="color: var(--text-muted); text-decoration: none;">CURRICULUM</a>
+    <span style="color: var(--border-hairline);">/</span>
+    <span style="color: var(--text-muted);"><%= course.category.toUpperCase() %></span>
+    <span style="color: var(--border-hairline);">/</span>
+    <span style="color: var(--accent-primary);"><%= course.code %></span>
+  </div>
+
+  <div class="grid-asym-3-1">
+    <!-- Left Major Column: Syllabus & Course Modules -->
+    <div>
+      <div style="margin-bottom: 2.5rem;">
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <span class="badge badge-accent"><%= course.code %></span>
+          <span class="badge badge-default"><%= course.difficulty %></span>
+          <span class="badge badge-default"><%= course.category %></span>
+        </div>
+
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.75rem;">
+          <%= course.title %>
+        </h1>
+
+        <p style="font-size: 1.2rem; color: var(--text-secondary); line-height: 1.55; margin-bottom: 1.5rem;">
+          <%= course.subtitle || course.description %>
+        </p>
+
+        <div class="panel" style="background-color: var(--bg-surface); padding: 1.75rem; margin-bottom: 2.5rem;">
+          <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Curriculum Description</h3>
+          <p style="line-height: 1.7; color: var(--text-secondary);"><%= course.description %></p>
+        </div>
+      </div>
+
+      <!-- Syllabus Topics Outline -->
+      <% if (syllabus && syllabus.length > 0) { %>
+        <div class="panel" style="margin-bottom: 2.5rem;">
+          <div class="panel-header">
+            <h3>Syllabus Invariants & Core Topics</h3>
+            <span class="index-tag">[ <%= syllabus.length %> TOPICS ]</span>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+            <% syllabus.forEach((item, idx) => { %>
+              <li style="display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.95rem;">
+                <span class="index-tag accent" style="padding-top: 0.2rem;">[ 0<%= idx + 1 %> ]</span>
+                <span style="color: var(--text-primary);"><%= item %></span>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <!-- Modules & Technical Lessons -->
+      <div style="margin-bottom: 2.5rem;">
+        <div class="section-header" style="margin-bottom: 1.5rem;">
+          <div>
+            <div class="index-tag accent" style="margin-bottom: 0.35rem;">[ LESSON SEQUENCING ]</div>
+            <h2>Course Modules & Lessons</h2>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <% modules.forEach((m, mIdx) => { %>
+            <div class="panel" style="padding: 1.75rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-hairline); padding-bottom: 0.75rem;">
+                <div>
+                  <span class="index-tag">[ MODULE 0<%= mIdx + 1 %> ]</span>
+                  <h3 style="font-size: 1.15rem; margin-top: 0.25rem;"><%= m.title %></h3>
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+                  <%= m.lessons ? m.lessons.length : 0 %> Lessons
+                </span>
+              </div>
+
+              <% if (m.description) { %>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;"><%= m.description %></p>
+              <% } %>
+
+              <% if (m.lessons && m.lessons.length > 0) { %>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <% m.lessons.forEach(l => { %>
+                    <% const isCompleted = completedLessonIds.includes(l.id); %>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.85rem; background-color: var(--bg-subtle); border: 1px solid var(--border-hairline); border-radius: var(--radius-sharp);">
+                      <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span class="lesson-check-icon <%= isCompleted ? 'done' : '' %>">
+                          <%= isCompleted ? '✓' : '' %>
+                        </span>
+                        <a href="/courses/<%= course.slug %>/learn/<%= l.slug %>" style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem; text-decoration: none;">
+                          <%= l.title %>
+                        </a>
+                      </div>
+                      
+                      <div style="display: flex; align-items: center; gap: 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+                        <span><%= l.duration_mins %>m</span>
+                        <span class="badge badge-default"><%= l.content_type.toUpperCase() %></span>
+                        <a href="/courses/<%= course.slug %>/learn/<%= l.slug %>" class="btn btn-secondary btn-sm" style="padding: 0.25rem 0.6rem;">
+                          Open &rarr;
+                        </a>
+                      </div>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } %>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Quizzes and Laboratory Assignments -->
+      <% if ((quizzes && quizzes.length > 0) || (assignments && assignments.length > 0)) { %>
+        <div class="panel" style="margin-bottom: 2rem;">
+          <div class="panel-header">
+            <h3>Assessments & Practical Laboratories</h3>
+            <span class="index-tag">[ BENCHMARK SPECIFICATION ]</span>
+          </div>
+
+          <div class="grid-cols-2">
+            <div>
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; font-family: var(--font-mono); color: var(--accent-primary);">
+                EXAMINATIONS & QUIZZES
+              </h4>
+              <% if (quizzes && quizzes.length > 0) { %>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                  <% quizzes.forEach(q => { %>
+                    <div style="padding: 0.85rem; background-color: var(--bg-subtle); border: 1px solid var(--border-hairline);">
+                      <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;"><%= q.title %></div>
+                      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        Limit: <%= q.time_limit_mins %> mins | Pass: <%= q.passing_score %>%
+                      </div>
+                      <a href="/assessments/quiz/<%= q.id %>" class="btn btn-secondary btn-sm">
+                        Start Quiz &rarr;
+                      </a>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } else { %>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">No quizzes published for this course.</p>
+              <% } %>
+            </div>
+
+            <div>
+              <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; font-family: var(--font-mono); color: var(--accent-primary);">
+                LABORATORY ASSIGNMENTS
+              </h4>
+              <% if (assignments && assignments.length > 0) { %>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                  <% assignments.forEach(a => { %>
+                    <div style="padding: 0.85rem; background-color: var(--bg-subtle); border: 1px solid var(--border-hairline);">
+                      <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;"><%= a.title %></div>
+                      <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                        Max Points: <%= a.max_points %> | Due: <%= a.due_date ? a.due_date.substring(0, 10) : 'Open' %>
+                      </div>
+                      <a href="/assessments/assignment/<%= a.id %>" class="btn btn-secondary btn-sm">
+                        View Briefing &rarr;
+                      </a>
+                    </div>
+                  <% }) %>
+                </div>
+              <% } else { %>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">No laboratory assignments published for this course.</p>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Right Column: Enrollment Card, Progress & Instructor -->
+    <div>
+      <!-- Enrollment Status & Action Card -->
+      <div class="panel" style="position: sticky; top: calc(var(--header-height) + 1.5rem); margin-bottom: 2rem;">
+        <div class="index-tag accent" style="margin-bottom: 1rem;">
+          [ ENROLLMENT STATE ]
+        </div>
+
+        <% if (enrollment) { %>
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span style="font-weight: 600; font-size: 0.9rem;">Course Progress</span>
+              <span style="font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: var(--accent-primary);">
+                <%= enrollment.progress_percent %>%
+              </span>
+            </div>
+            
+            <div class="progress-bar-container" style="height: 10px; margin-bottom: 1rem;">
+              <div class="progress-bar-fill" style="width: <%= enrollment.progress_percent %>%;"></div>
+            </div>
+
+            <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+              STATUS: <strong style="color: var(--status-success);"><%= enrollment.status.toUpperCase() %></strong>
+            </div>
+
+            <% if (enrollment.progress_percent >= 100 && enrollment.certificate_code) { %>
+              <div style="padding: 1rem; background-color: var(--status-success-bg); border: 1px solid rgba(21, 128, 61, 0.3); margin-bottom: 1.25rem;">
+                <div style="font-family: var(--font-mono); font-size: 0.725rem; font-weight: 700; color: var(--status-success); margin-bottom: 0.35rem;">
+                  OFFICIAL CREDENTIAL ISSUED
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 0.75rem; color: var(--text-primary);">
+                  Code: <%= enrollment.certificate_code %>
+                </div>
+                <a href="/verify/<%= enrollment.certificate_code %>" class="btn btn-secondary btn-sm" style="width: 100%;">
+                  Inspect Credential &rarr;
+                </a>
+              </div>
+            <% } %>
+
+            <% if (nextLesson) { %>
+              <a href="/courses/<%= course.slug %>/learn/<%= nextLesson.slug %>" class="btn btn-primary" style="width: 100%;">
+                Resume Course Player &rarr;
+              </a>
+            <% } else { %>
+              <a href="/courses/<%= course.slug %>/learn" class="btn btn-primary" style="width: 100%;">
+                Open Course Player &rarr;
+              </a>
+            <% } %>
+          </div>
+        <% } else { %>
+          <div style="margin-bottom: 1.5rem;">
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+              Enroll to access lesson reading materials, interactive multiple-choice assessments, and laboratory project grading.
+            </p>
+
+            <form action="/courses/<%= course.id %>/enroll" method="POST">
+              <button type="submit" class="btn btn-accent btn-lg" style="width: 100%;">
+                Enroll In Course &rarr;
+              </button>
+            </form>
+          </div>
+        <% } %>
+
+        <!-- Course Meta Specifications Table -->
+        <div style="border-top: 1px solid var(--border-hairline); padding-top: 1.25rem;">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.8rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">CODE:</span>
+              <strong><%= course.code %></strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">LEVEL:</span>
+              <strong><%= course.difficulty %></strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">ESTIMATED:</span>
+              <strong><%= course.estimated_hours %> Hours</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">FORMAT:</span>
+              <strong>Self-Paced / Labs</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructor Biographical Panel -->
+        <div style="border-top: 1px solid var(--border-hairline); margin-top: 1.5rem; padding-top: 1.25rem;">
+          <div class="index-tag" style="margin-bottom: 0.75rem;">[ FACULTY AUTHOR ]</div>
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary);"><%= course.instructor_name %></div>
+          <div style="font-size: 0.75rem; color: var(--accent-primary); font-family: var(--font-mono); margin-bottom: 0.75rem;"><%= course.instructor_headline %></div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.55;">
+            <%= course.instructor_bio %>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,126 @@
+<div class="container section-editorial">
+  <div style="max-width: 860px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+      <a href="/instructor/courses/<%= course.id %>/curriculum" style="color: var(--text-muted); text-decoration: none;">&larr; BACK TO CURRICULUM</a>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--accent-primary);">NEW EXAMINATION QUIZ</span>
+    </div>
+
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="panel-header">
+        <div>
+          <span class="index-tag accent">[ EXAMINATION AUTHORING TERMINAL ]</span>
+          <h1 style="font-size: 1.85rem; margin-top: 0.25rem;">Create Assessment Quiz</h1>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+            COURSE: <%= course.code %> - <%= course.title %>
+          </div>
+        </div>
+      </div>
+
+      <form action="/instructor/courses/<%= course.id %>/quizzes/new" method="POST">
+        <!-- Quiz Metadata -->
+        <div class="form-group">
+          <label class="form-label" for="title">Assessment Title</label>
+          <input type="text" id="title" name="title" class="form-input" required placeholder="e.g. CS-401 Module 2 Consensus & Raft Examination">
+        </div>
+
+        <div class="grid-cols-4">
+          <div class="form-group">
+            <label class="form-label" for="module_id">Target Module</label>
+            <select id="module_id" name="module_id" class="form-select">
+              <option value="">Course-Wide (Final)</option>
+              <% modules.forEach(m => { %>
+                <option value="<%= m.id %>"><%= m.title %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="time_limit_mins">Time Limit (Mins)</label>
+            <input type="number" id="time_limit_mins" name="time_limit_mins" class="form-input" value="20" min="5" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="passing_score">Pass Threshold (%)</label>
+            <input type="number" id="passing_score" name="passing_score" class="form-input" value="70" min="10" max="100" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="max_attempts">Max Attempts</label>
+            <input type="number" id="max_attempts" name="max_attempts" class="form-input" value="3" min="1" max="10" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="description">Assessment Scope & Instructions</label>
+          <textarea id="description" name="description" class="form-textarea" placeholder="Detail the concepts and problem types tested in this examination..."></textarea>
+        </div>
+
+        <!-- Initial Questions (3 Question Blocks) -->
+        <div style="margin-top: 2.5rem; border-top: 1px solid var(--border-hairline); padding-top: 1.5rem;">
+          <div class="panel-header" style="margin-bottom: 1.5rem;">
+            <h3>Multiple-Choice Questions</h3>
+            <span class="index-tag">[ RANDOMIZED TELEMETRY ]</span>
+          </div>
+
+          <% for (let i = 0; i < 2; i++) { %>
+            <div class="panel" style="background-color: var(--bg-canvas); margin-bottom: 1.5rem; padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-hairline); padding-bottom: 0.5rem;">
+                <span class="index-tag accent">[ QUESTION 0<%= i + 1 %> ]</span>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-family: var(--font-mono); font-size: 0.75rem;">Points:</span>
+                  <input type="number" name="questions[<%= i %>][points]" value="10" class="form-input" style="width: 70px; padding: 0.2rem 0.5rem;">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Question Text</label>
+                <input type="text" name="questions[<%= i %>][text]" class="form-input" required placeholder="State the question clearly...">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Multiple-Choice Options (Select which option is correct)</label>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="radio" name="questions[<%= i %>][correct]" value="a" required>
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; width: 25px;">A:</span>
+                    <input type="text" name="questions[<%= i %>][option_a]" class="form-input" required placeholder="Option A text">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="radio" name="questions[<%= i %>][correct]" value="b">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; width: 25px;">B:</span>
+                    <input type="text" name="questions[<%= i %>][option_b]" class="form-input" required placeholder="Option B text">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="radio" name="questions[<%= i %>][correct]" value="c">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; width: 25px;">C:</span>
+                    <input type="text" name="questions[<%= i %>][option_c]" class="form-input" required placeholder="Option C text">
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <input type="radio" name="questions[<%= i %>][correct]" value="d">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; width: 25px;">D:</span>
+                    <input type="text" name="questions[<%= i %>][option_d]" class="form-input" required placeholder="Option D text">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">Technical Explanation (Shown after completion)</label>
+                <input type="text" name="questions[<%= i %>][explanation]" class="form-input" placeholder="Explain why the correct answer is valid...">
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+          <a href="/instructor/courses/<%= course.id %>/curriculum" class="btn btn-secondary">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary">
+            Publish Assessment Quiz &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

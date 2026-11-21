@@ -14,14 +14,14 @@ This repository contains the practical tasks and projects assigned during the **
 
 ## Assigned Tasks
 
-| Task | Project | Difficulty |
-|------|---------|------------|
-| 01 | Personal Portfolio Website | Easy |
-| 02 | Student Management System | Easy |
-| 03 | Expense Tracker Web Application | Medium |
-| 04 | E-Commerce Website | Medium |
-| 05 | Job Portal Application | Advanced |
-| 06 | Learning Management System (LMS) | Advanced |
+| Task | Project | Folder | Difficulty |
+|------|---------|--------|------------|
+| 01 | Personal Portfolio Website | `Task_01_Portfolio` | Easy |
+| 02 | Student Management System | [`Student_Management_System_Development`](./Student_Management_System_Development) | Easy |
+| 03 | Expense Tracker Web Application | [`Expense_Tracker_Application`](./Expense_Tracker_Application) | Medium |
+| 04 | E-Commerce Website | [`Ecommerce_Platform_Development`](./Ecommerce_Platform_Development) | Medium |
+| 05 | Job Portal Application | [`JobPortal`](./JobPortal) | Advanced |
+| 06 | Learning Management System (LMS) | [`Learning_Management_System`](./Learning_Management_System) | Advanced |
 
 ## Repository Structure
 

@@ -1,0 +1,158 @@
+<div class="container" style="padding: var(--space-12) 0;">
+  <!-- Header -->
+  <div class="section-header">
+    <div>
+      <h1 class="section-title">Candidate Workspace</h1>
+      <p class="section-subtitle">
+        Welcome back, <%= user.name %> &bull; <%= user.title || 'Technical Practitioner' %>
+      </p>
+    </div>
+    <div style="display: flex; gap: var(--space-3);">
+      <a href="/jobs" class="btn btn-outline btn-sm">Explore Openings</a>
+      <a href="/auth/profile" class="btn btn-primary btn-sm">Edit Profile</a>
+    </div>
+  </div>
+
+  <!-- Profile Calibration Progress Notice -->
+  <div class="card" style="margin-bottom: var(--space-8); background-color: var(--bg-surface);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+      <div>
+        <strong style="font-size: var(--font-size-sm); color: var(--color-primary);">Profile Calibration Index</strong>
+        <span style="font-size: var(--font-size-xs); color: var(--text-muted); margin-left: var(--space-2);">
+          Based on verified skills, bio, location, and contact parameters.
+        </span>
+      </div>
+      <span style="font-size: var(--font-size-sm); font-weight: 750; color: var(--color-accent);"><%= profileCompletion %>%</span>
+    </div>
+    <div class="progress-container">
+      <div class="progress-fill" style="width: <%= profileCompletion %>%;"></div>
+    </div>
+  </div>
+
+  <!-- Metric Overview -->
+  <div class="dashboard-stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Applications Submitted</div>
+      <div class="stat-value"><%= stats.totalApplications %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Active Pipelines</div>
+      <div class="stat-value"><%= stats.activeInterviews %></div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-label">Saved Positions</div>
+      <div class="stat-value"><%= stats.totalSaved %></div>
+    </div>
+  </div>
+
+  <!-- Applications Lifecycle Table -->
+  <div style="margin-bottom: var(--space-12);">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-4);">
+      <h2 style="font-size: var(--font-size-xl);">Application Pipelines</h2>
+      <span class="mono-tag"><%= applications.length %> Active Records</span>
+    </div>
+
+    <% if (applications && applications.length > 0) { %>
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Position</th>
+                <th>Company Entity</th>
+                <th>Work Model</th>
+                <th>Submitted</th>
+                <th>Lifecycle Status</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% applications.forEach(function(app) { %>
+                <tr>
+                  <td>
+                    <strong style="color: var(--color-primary); display: block;">
+                      <a href="/jobs/<%= app.job_id %>"><%= app.job_title %></a>
+                    </strong>
+                    <span style="font-size: var(--font-size-xs); color: var(--text-muted);"><%= app.job_location %></span>
+                  </td>
+                  <td><%= app.job_company %></td>
+                  <td>
+                    <span class="badge badge-<%= app.job_work_type %>"><%= app.job_work_type %></span>
+                  </td>
+                  <td>
+                    <span class="mono-tag">
+                      <%= new Date(app.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge badge-<%= app.status %>"><%= app.status %></span>
+                  </td>
+                  <td style="text-align: right;">
+                    <a href="/dashboard/applications/<%= app.id %>" class="btn btn-outline btn-sm">
+                      Inspect Pipeline &rarr;
+                    </a>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <h3 class="empty-state-title">No Applications Transmitted</h3>
+        <p class="empty-state-desc">
+          You have not applied to any openings yet. Search through active verified listings to initiate your first submission.
+        </p>
+        <a href="/jobs" class="btn btn-primary">Browse Positions</a>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Saved Positions -->
+  <div>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-4);">
+      <h2 style="font-size: var(--font-size-xl);">Saved Bookmarks</h2>
+      <span class="mono-tag"><%= savedJobs.length %> Bookmarked</span>
+    </div>
+
+    <% if (savedJobs && savedJobs.length > 0) { %>
+      <div class="jobs-grid">
+        <% savedJobs.forEach(function(job) { %>
+          <div class="job-card">
+            <div>
+              <div class="job-card-top">
+                <span class="job-company"><%= job.company %></span>
+                <span class="job-date">Saved <%= new Date(job.saved_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) %></span>
+              </div>
+              <h3 class="job-title" style="font-size: var(--font-size-md);">
+                <a href="/jobs/<%= job.id %>"><%= job.title %></a>
+              </h3>
+              <div class="job-meta-row">
+                <span class="badge badge-<%= job.work_type %>"><%= job.work_type %></span>
+                <span class="tag"><%= job.job_type %></span>
+              </div>
+              <p class="job-snippet"><%= job.description %></p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-light); padding-top: var(--space-3);">
+              <form action="/jobs/<%= job.id %>/save" method="POST">
+                <button type="submit" class="btn btn-ghost btn-sm" style="color: var(--status-danger-text);">Remove</button>
+              </form>
+              <a href="/jobs/<%= job.id %>" class="btn btn-outline btn-sm">View Vacancy &rarr;</a>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <h3 class="empty-state-title">No Saved Positions</h3>
+        <p class="empty-state-desc">
+          Bookmark positions while browsing to review and apply to them later.
+        </p>
+      </div>
+    <% } %>
+  </div>
+</div>

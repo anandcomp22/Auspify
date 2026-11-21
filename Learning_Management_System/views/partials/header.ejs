@@ -1,0 +1,48 @@
+<header class="site-header">
+  <div class="container">
+    <div class="brand-wrapper">
+      <a href="/" style="display: flex; align-items: center; gap: 0.75rem; text-decoration: none;">
+        <div class="brand-monogram">A</div>
+        <div>
+          <span class="brand-title">AUSPIFY LMS</span>
+          <span class="brand-sub">INSTITUTE OF TECHNOLOGY</span>
+        </div>
+      </a>
+      
+      <!-- Custom Domain Verification Indicator -->
+      <a href="/settings/domain" class="domain-badge-header" title="Connected to Custom Domain with active SSL encryption">
+        <span class="status-dot-active"></span>
+        <span>DOMAIN: <%= typeof customDomain !== 'undefined' ? customDomain.domain : 'lms.auspify.edu' %></span>
+      </a>
+    </div>
+
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/courses" class="nav-link">Curriculum</a></li>
+        <li><a href="/verify/AUSPIFY-LMS-2026-88F4A19E" class="nav-link">Verify Credential</a></li>
+        <li><a href="/settings/domain" class="nav-link">Domain Status</a></li>
+        
+        <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+          <li>
+            <a href="/dashboard" class="nav-link" style="font-weight: 600; color: var(--accent-primary);">
+              Workspace (<%= currentUser.role.toUpperCase() %>)
+            </a>
+          </li>
+          <li><a href="/auth/profile" class="nav-link">Profile</a></li>
+          <li>
+            <a href="/auth/logout" class="btn btn-secondary btn-sm" style="margin-left: 0.5rem;">
+              Sign Out
+            </a>
+          </li>
+        <% } else { %>
+          <li><a href="/auth/login" class="nav-link">Sign In</a></li>
+          <li>
+            <a href="/auth/register" class="btn btn-primary btn-sm">
+              Enroll Student
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
+</header>

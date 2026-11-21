@@ -1,0 +1,139 @@
+<div class="container container-narrow" style="padding: var(--space-16) 0;">
+  <div style="max-width: 520px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: var(--space-8);">
+      <a href="/" class="brand-mark" style="margin-bottom: var(--space-3); display: inline-flex;">
+        <span class="brand-emblem">H</span>
+        <span>HireScope</span>
+      </a>
+      <h1 style="font-size: var(--font-size-2xl); margin-top: var(--space-2);">Create Account</h1>
+      <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-top: var(--space-1);">
+        Select your account role to access specialized platform tools.
+      </p>
+    </div>
+
+    <% if (errors && errors.length > 0) { %>
+      <div class="alert alert-error">
+        <div>
+          <% errors.forEach(function(e) { %>
+            <div><%= e.msg %></div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+
+    <div class="card">
+      <form action="/auth/register" method="POST">
+        <!-- Role Selection -->
+        <div class="form-group">
+          <label class="form-label">I am joining as</label>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+            <label style="cursor: pointer; border: 1px solid var(--border-main); padding: var(--space-4); border-radius: var(--radius-sharp); display: flex; align-items: flex-start; gap: var(--space-3); background: var(--bg-canvas);">
+              <input 
+                type="radio" 
+                name="role" 
+                value="seeker" 
+                <%= (!oldInput || !oldInput.role || oldInput.role === 'seeker') ? 'checked' : '' %>
+                style="margin-top: 3px;"
+              >
+              <div>
+                <strong style="display: block; font-size: var(--font-size-sm);">Job Seeker</strong>
+                <span style="font-size: var(--font-size-xs); color: var(--text-muted); display: block;">Discover positions & apply</span>
+              </div>
+            </label>
+
+            <label style="cursor: pointer; border: 1px solid var(--border-main); padding: var(--space-4); border-radius: var(--radius-sharp); display: flex; align-items: flex-start; gap: var(--space-3); background: var(--bg-canvas);">
+              <input 
+                type="radio" 
+                name="role" 
+                value="employer" 
+                <%= (oldInput && oldInput.role === 'employer') ? 'checked' : '' %>
+                style="margin-top: 3px;"
+              >
+              <div>
+                <strong style="display: block; font-size: var(--font-size-sm);">Employer</strong>
+                <span style="font-size: var(--font-size-xs); color: var(--text-muted); display: block;">Post openings & review talent</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Full Name -->
+        <div class="form-group">
+          <label class="form-label" for="name">Full Name</label>
+          <input 
+            type="text" 
+            id="name" 
+            name="name" 
+            class="form-input" 
+            value="<%= (oldInput && oldInput.name) ? oldInput.name : '' %>" 
+            required 
+            placeholder="e.g. Alex Mercer"
+          >
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            class="form-input" 
+            value="<%= (oldInput && oldInput.email) ? oldInput.email : '' %>" 
+            required 
+            placeholder="name@organization.com"
+          >
+        </div>
+
+        <!-- Title -->
+        <div class="form-group">
+          <label class="form-label" for="title">Professional Title / Focus</label>
+          <input 
+            type="text" 
+            id="title" 
+            name="title" 
+            class="form-input" 
+            value="<%= (oldInput && oldInput.title) ? oldInput.title : '' %>" 
+            placeholder="e.g. Staff Distributed Engineer or Head of Talent"
+          >
+        </div>
+
+        <!-- Employer-only Company Name -->
+        <div class="form-group" id="employer-specific-fields" style="display: <%= (oldInput && oldInput.role === 'employer') ? 'block' : 'none' %>;">
+          <label class="form-label" for="company">Company / Organization Name</label>
+          <input 
+            type="text" 
+            id="company" 
+            name="company" 
+            class="form-input" 
+            value="<%= (oldInput && oldInput.company) ? oldInput.company : '' %>" 
+            placeholder="e.g. Strata Works Systems"
+          >
+          <div class="form-help">Verified company name as shown on public listings.</div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">Password (Minimum 6 Characters)</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            class="form-input" 
+            required 
+            autocomplete="new-password"
+            placeholder="Choose a secure password"
+          >
+        </div>
+
+        <button type="submit" class="btn btn-accent btn-block" style="margin-top: var(--space-4);">
+          Register Account
+        </button>
+      </form>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--space-6); font-size: var(--font-size-sm); color: var(--text-secondary);">
+      Already have an account? <a href="/auth/login" style="font-weight: 700; color: var(--color-accent);">Sign In</a>
+    </div>
+  </div>
+</div>

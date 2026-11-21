@@ -1,0 +1,70 @@
+<div class="container section-editorial">
+  <div style="max-width: 680px; margin: 2rem auto;">
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="panel-header">
+        <div>
+          <div class="index-tag accent">[ IDENTITY RECORD // USER #<%= user.id %> ]</div>
+          <h1 style="font-size: 1.85rem; margin-top: 0.25rem;">Account Credentials</h1>
+        </div>
+        <span class="badge badge-accent"><%= user.role.toUpperCase() %></span>
+      </div>
+
+      <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+          <ul style="margin-left: 1rem;">
+            <% errors.forEach(err => { %>
+              <li><%= err %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+      <% } %>
+
+      <form action="/auth/profile" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="email">Institutional Email (Immutable)</label>
+          <input type="email" id="email" class="form-input" value="<%= user.email %>" disabled style="background-color: var(--bg-subtle);">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="name">Full Academic Name</label>
+          <input type="text" id="name" name="name" class="form-input" value="<%= user.name %>" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="headline">Academic Title or Headline</label>
+          <input type="text" id="headline" name="headline" class="form-input" value="<%= user.headline || '' %>">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="bio">Biographical Summary & Research Interests</label>
+          <textarea id="bio" name="bio" class="form-textarea"><%= user.bio || '' %></textarea>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-hairline);">
+          <div class="index-tag" style="margin-bottom: 1rem;">[ SECURITY PASSPHRASE ROTATION ]</div>
+          
+          <div class="grid-cols-2">
+            <div class="form-group">
+              <label class="form-label" for="current_password">Current Password</label>
+              <input type="password" id="current_password" name="current_password" class="form-input" placeholder="Required only to change password">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="new_password">New Password</label>
+              <input type="password" id="new_password" name="new_password" class="form-input" placeholder="Min. 8 characters" minlength="8">
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+          <a href="/dashboard" class="btn btn-secondary">Return to Dashboard</a>
+          <button type="submit" class="btn btn-primary">Save Profile Updates &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="container section-editorial">
+  <div style="max-width: 860px; margin: 0 auto;">
+    <div class="index-tag accent" style="margin-bottom: 0.75rem;">
+      [ LEGAL SPECIFICATION // COMPLIANCE INVARIANT ]
+    </div>
+    
+    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+      Privacy Policy and Data Protection Invariants
+    </h1>
+    
+    <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); margin-bottom: 2.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border-hairline);">
+      EFFECTIVE DATE: OCTOBER 15, 2026 | VERSION: 2.4 | COMPLIANT WITH FERPA, GDPR, AND ISO/IEC 24751
+    </div>
+
+    <div class="panel" style="padding: 2.5rem; margin-bottom: 2rem; background-color: var(--bg-surface);">
+      <h2 style="font-size: 1.35rem; margin-bottom: 1rem; color: var(--text-primary);">
+        1. Overview and Institutional Scope
+      </h2>
+      <p style="margin-bottom: 1rem; line-height: 1.7;">
+        Auspify Technologies and the Auspify Institute of Technology (collectively referred to as "the Institution", "we", "us", or "our") operate this Learning Management System ("Platform") under strict academic data governance standards. This Privacy Policy outlines the technical and procedural invariants governing the collection, processing, storage, and transmission of student and faculty data.
+      </p>
+      <p style="margin-bottom: 1.5rem; line-height: 1.7;">
+        By accessing the Platform or submitting academic coursework, you acknowledge and agree to the data handling protocols described herein.
+      </p>
+
+      <h2 style="font-size: 1.35rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary);">
+        2. Categories of Information Collected
+      </h2>
+      <p style="margin-bottom: 1rem; line-height: 1.7;">
+        The Platform collects only data strictly required for the delivery of academic coursework, assessment grading, and credential verification:
+      </p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.7; color: var(--text-secondary);">
+        <li><strong>Account Credentials:</strong> Full academic name, institutional email address, hashed passwords generated via salted bcrypt algorithms, user role designation, and optional academic biographical details.</li>
+        <li><strong>Curriculum Progression Data:</strong> Timestamps of lesson completions, module completion states, course enrollment status, and progress percentages.</li>
+        <li><strong>Assessment and Academic Records:</strong> Quiz response telemetry, numerical scores, time-spent intervals, assignment file uploads (source code, PDF reports, laboratory archives), and instructor rubric evaluations.</li>
+        <li><strong>Cryptographic Credential Data:</strong> Public certificate serial numbers, student names, course codes, completion timestamps, and immutable SHA-256 validation digests.</li>
+        <li><strong>Technical Network Telemetry:</strong> Request IP addresses, HTTP user-agent headers, and session cookie identifiers used exclusively for security enforcement and brute-force prevention.</li>
+      </ul>
+
+      <h2 style="font-size: 1.35rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary);">
+        3. Purpose and Legal Basis of Processing
+      </h2>
+      <p style="margin-bottom: 1rem; line-height: 1.7;">
+        All personal and academic information is processed under the following lawful bases:
+      </p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.7; color: var(--text-secondary);">
+        <li><strong>Academic Contract Fulfillment:</strong> To authenticate student access, deliver educational course materials, track syllabus progress, and issue verified completion credentials.</li>
+        <li><strong>Legitimate Academic Interest:</strong> To maintain academic integrity, prevent plagiarism, and ensure authentic assessment completion through automated timekeeping and attempt bounding.</li>
+        <li><strong>Legal and Accreditation Compliance:</strong> To satisfy auditing requirements established by higher education regulatory bodies and technical accreditation boards.</li>
+      </ul>
+
+      <h2 style="font-size: 1.35rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary);">
+        4. Cookies and Session Invariants
+      </h2>
+      <p style="margin-bottom: 1rem; line-height: 1.7;">
+        The Platform utilizes only first-party, strictly necessary HTTP session cookies (tagged <code>connect.sid</code>). We do not deploy third-party advertising trackers, cross-site telemetry beacons, or behavioral monitoring scripts:
+      </p>
+      <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.7; color: var(--text-secondary);">
+        <li><strong>SameSite Policy:</strong> All session cookies are configured with <code>SameSite=Lax</code> to prevent Cross-Site Request Forgery (CSRF).</li>
+        <li><strong>HttpOnly Guard:</strong> Cookies are marked <code>HttpOnly</code> to prevent access from client-side JavaScript execution.</li>
+        <li><strong>Session Expiration:</strong> Active sessions expire automatically after seven days of inactivity or immediately upon manual sign-out.</li>
+      </ul>
+
+      <h2 style="font-size: 1.35rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary);">
+        5. Data Retention and Deletion Rights
+      </h2>
+      <p style="margin-bottom: 1rem; line-height: 1.7;">
+        Academic records, including graded assignments, quiz logs, and certificate records, are retained for the duration of the student's academic standing plus a mandatory five-year accreditation audit window.
+      </p>
+      <p style="margin-bottom: 1.5rem; line-height: 1.7;">
+        Registered students may request an export of their academic file or request account anonymization in accordance with applicable data privacy legislation by contacting the Academic Systems Registrar.
+      </p>
+
+      <h2 style="font-size: 1.35rem; margin-top: 2rem; margin-bottom: 1rem; color: var(--text-primary);">
+        6. Institutional Contact Information
+      </h2>
+      <p style="line-height: 1.7;">
+        For questions or formal inquiries regarding data protection policies, contact:
+      </p>
+      <div style="font-family: var(--font-mono); font-size: 0.85rem; background-color: var(--bg-subtle); padding: 1rem; margin-top: 0.75rem; border: 1px solid var(--border-hairline);">
+        Data Protection Officer & Registrar<br>
+        Auspify Institute of Technology<br>
+        Domain: lms.auspify.edu<br>
+        Email: privacy@auspify.edu
+      </div>
+    </div>
+  </div>
+</div>

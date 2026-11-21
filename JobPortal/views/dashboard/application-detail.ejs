@@ -1,0 +1,169 @@
+<div class="container" style="padding: var(--space-12) 0;">
+  <!-- Breadcrumb -->
+  <div style="margin-bottom: var(--space-6); font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: var(--tracking-wide); color: var(--text-muted);">
+    <a href="/dashboard" style="color: var(--text-secondary);">Workspace</a> / 
+    <span>Applications</span> / 
+    <span style="color: var(--color-primary); font-weight: 700;">Record #<%= application.id %></span>
+  </div>
+
+  <div class="section-header">
+    <div>
+      <div class="mono-tag" style="margin-bottom: var(--space-2);">
+        Application Dossier &bull; Transmitted <%= new Date(application.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %>
+      </div>
+      <h1 class="section-title">
+        <%= application.candidate_name %> &rarr; <%= application.job_title %>
+      </h1>
+      <p class="section-subtitle">
+        Organization: <%= application.job_company %> &bull; Location Base: <%= application.job_location %>
+      </p>
+    </div>
+    <div>
+      <span class="badge badge-<%= application.status %>" style="font-size: var(--font-size-sm); padding: 6px 14px;">
+        <%= application.status.toUpperCase() %>
+      </span>
+    </div>
+  </div>
+
+  <div class="job-detail-grid">
+    <!-- Left Column: Application Details & Cover Pitch -->
+    <div>
+      <!-- Cover Letter / Pitch -->
+      <div class="card" style="margin-bottom: var(--space-8);">
+        <h2 style="font-size: var(--font-size-md); font-weight: 750; text-transform: uppercase; letter-spacing: var(--tracking-wide); margin-bottom: var(--space-4); border-bottom: 1px solid var(--border-light); padding-bottom: var(--space-2);">
+          Direct Candidate Cover Pitch
+        </h2>
+        <div style="font-size: var(--font-size-base); line-height: 1.7; color: var(--text-body); white-space: pre-line;">
+          <%= application.cover_letter || 'No introductory cover note attached with this submission.' %>
+        </div>
+      </div>
+
+      <!-- Resume File Asset -->
+      <div class="card" style="margin-bottom: var(--space-8);">
+        <h2 style="font-size: var(--font-size-md); font-weight: 750; text-transform: uppercase; letter-spacing: var(--tracking-wide); margin-bottom: var(--space-4); border-bottom: 1px solid var(--border-light); padding-bottom: var(--space-2);">
+          Attached Resume Document
+        </h2>
+
+        <% if (application.resume_filename) { %>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); background-color: var(--bg-subtle); border-radius: var(--radius-sharp);">
+            <div>
+              <strong style="display: block; font-size: var(--font-size-sm); color: var(--color-primary);">
+                <%= application.resume_filename %>
+              </strong>
+              <span style="font-size: var(--font-size-xs); color: var(--text-muted);">Verified Candidate Asset</span>
+            </div>
+            <a href="/uploads/resumes/<%= application.resume_filename %>" target="_blank" download class="btn btn-primary btn-sm">
+              Download Asset &darr;
+            </a>
+          </div>
+        <% } else { %>
+          <p style="font-size: var(--font-size-sm); color: var(--text-muted); margin-bottom: 0;">
+            No external document uploaded. Candidate evaluated via calibrated profile and pitch.
+          </p>
+        <% } %>
+      </div>
+
+      <!-- Notes from Employer if present -->
+      <% if (application.employer_notes) { %>
+        <div class="card" style="border-left: 4px solid var(--color-accent);">
+          <h3 style="font-size: var(--font-size-sm); font-weight: 750; text-transform: uppercase; letter-spacing: var(--tracking-wide); margin-bottom: var(--space-2);">
+            Reviewer Feedback / Operational Notes
+          </h3>
+          <p style="font-size: var(--font-size-sm); color: var(--text-body); margin-bottom: 0; white-space: pre-line;">
+            <%= application.employer_notes %>
+          </p>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Right Column: Candidate Profile & Lifecycle Management -->
+    <div>
+      <!-- Candidate Profile Summary Card -->
+      <div class="card" style="margin-bottom: var(--space-6);">
+        <h3 style="font-size: var(--font-size-sm); font-weight: 750; text-transform: uppercase; letter-spacing: var(--tracking-wide); margin-bottom: var(--space-4); border-bottom: 1px solid var(--border-light); padding-bottom: var(--space-2);">
+          Candidate Dossier
+        </h3>
+
+        <div style="margin-bottom: var(--space-4);">
+          <strong style="font-size: var(--font-size-lg); display: block; color: var(--color-primary);">
+            <%= application.candidate_name %>
+          </strong>
+          <span style="font-size: var(--font-size-sm); color: var(--color-accent); font-weight: 600;">
+            <%= application.candidate_title || 'Software Practitioner' %>
+          </span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-2); font-size: var(--font-size-xs); color: var(--text-secondary); margin-bottom: var(--space-4);">
+          <div><strong>Email:</strong> <%= application.candidate_email %></div>
+          <% if (application.candidate_phone) { %>
+            <div><strong>Phone:</strong> <%= application.candidate_phone %></div>
+          <% } %>
+          <% if (application.candidate_location) { %>
+            <div><strong>Base:</strong> <%= application.candidate_location %></div>
+          <% } %>
+        </div>
+
+        <% if (application.candidate_bio) { %>
+          <div style="font-size: var(--font-size-xs); color: var(--text-body); line-height: 1.6; margin-bottom: var(--space-4); padding: var(--space-3); background: var(--bg-subtle); border-radius: var(--radius-sharp);">
+            <%= application.candidate_bio %>
+          </div>
+        <% } %>
+
+        <% if (application.candidate_skills) { %>
+          <div>
+            <div class="mono-tag" style="margin-bottom: var(--space-2);">Indexed Proficiencies</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+              <% application.candidate_skills.split(',').forEach(function(s) { %>
+                <span class="tag"><%= s.trim() %></span>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Employer Action: Status Progression Form -->
+      <% if (isJobEmployer) { %>
+        <div class="card" style="border-top: 3px solid var(--color-accent);">
+          <h3 style="font-size: var(--font-size-sm); font-weight: 750; text-transform: uppercase; letter-spacing: var(--tracking-wide); margin-bottom: var(--space-4); border-bottom: 1px solid var(--border-light); padding-bottom: var(--space-2);">
+            Advance Lifecycle Status
+          </h3>
+
+          <form action="/dashboard/applications/<%= application.id %>/status" method="POST">
+            <div class="form-group">
+              <label class="form-label" for="status">Stage Assessment</label>
+              <select id="status" name="status" class="form-select" required>
+                <option value="pending" <%= application.status === 'pending' ? 'selected' : '' %>>Pending Initial Review</option>
+                <option value="reviewing" <%= application.status === 'reviewing' ? 'selected' : '' %>>In Active Evaluation</option>
+                <option value="shortlisted" <%= application.status === 'shortlisted' ? 'selected' : '' %>>Shortlisted</option>
+                <option value="interview" <%= application.status === 'interview' ? 'selected' : '' %>>Technical Interview</option>
+                <option value="accepted" <%= application.status === 'accepted' ? 'selected' : '' %>>Offer Extended / Accepted</option>
+                <option value="rejected" <%= application.status === 'rejected' ? 'selected' : '' %>>Declined / Closed</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="employer_notes">Evaluator Feedback / Context</label>
+              <textarea 
+                id="employer_notes" 
+                name="employer_notes" 
+                class="form-textarea" 
+                rows="4" 
+                placeholder="Internal hiring notes or feedback regarding candidate calibration."
+              ><%= application.employer_notes || '' %></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-accent btn-block">
+              Commit Status Update
+            </button>
+          </form>
+        </div>
+      <% } %>
+
+      <div style="margin-top: var(--space-4);">
+        <a href="/dashboard" class="btn btn-outline btn-block btn-sm">
+          &larr; Return to Workspace
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,224 @@
+<div class="container section-editorial">
+  <!-- Top Navigation & Course Overview Header -->
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.75rem; font-family: var(--font-mono); font-size: 0.8rem; margin-bottom: 0.5rem;">
+        <a href="/dashboard/instructor" style="color: var(--text-muted); text-decoration: none;">&larr; FACULTY WORKSPACE</a>
+        <span style="color: var(--border-hairline);">/</span>
+        <span style="color: var(--accent-primary);"><%= course.code %> CURRICULUM</span>
+      </div>
+      <h1 style="font-size: 2.25rem;"><%= course.code %>: <%= course.title %></h1>
+    </div>
+
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      <a href="/courses/<%= course.slug %>" target="_blank" class="btn btn-secondary btn-sm">
+        Preview Course Page &rarr;
+      </a>
+      <a href="/instructor/courses/<%= course.id %>/quizzes/new" class="btn btn-secondary btn-sm">
+        + Add Quiz Assessment
+      </a>
+      <a href="/instructor/courses/<%= course.id %>/assignments/new" class="btn btn-secondary btn-sm">
+        + Add Laboratory
+      </a>
+      <a href="/instructor/courses/<%= course.id %>/edit" class="btn btn-secondary btn-sm">
+        Edit Metadata
+      </a>
+    </div>
+  </div>
+
+  <div class="grid-asym-3-1">
+    <!-- Main Column: Modules & Lessons Hierarchy -->
+    <div>
+      <div class="section-header" style="margin-bottom: 1.5rem;">
+        <div>
+          <div class="index-tag accent" style="margin-bottom: 0.25rem;">[ CURRICULUM SEQUENCING ]</div>
+          <h2>Course Modules & Lessons (<%= modules.length %>)</h2>
+        </div>
+      </div>
+
+      <% if (modules && modules.length > 0) { %>
+        <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+          <% modules.forEach((m, mIdx) => { %>
+            <div class="panel" style="padding: 1.75rem;">
+              <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-hairline); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                <div>
+                  <span class="index-tag">[ MODULE 0<%= mIdx + 1 %> ]</span>
+                  <h3 style="font-size: 1.2rem; margin-top: 0.25rem;"><%= m.title %></h3>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <form action="/instructor/courses/<%= course.id %>/modules/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this module and all its contained lessons?');" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary btn-sm" style="color: var(--status-danger); border-color: rgba(185,28,28,0.3); padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                      Delete Module
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <% if (m.description) { %>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;"><%= m.description %></p>
+              <% } %>
+
+              <!-- Lessons List -->
+              <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <% if (m.lessons && m.lessons.length > 0) { %>
+                  <% m.lessons.forEach(l => { %>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+                      <div>
+                        <strong style="font-size: 0.925rem;"><%= l.title %></strong>
+                        <div style="font-family: var(--font-mono); font-size: 0.725rem; color: var(--text-muted);">
+                          <%= l.duration_mins %> mins | Type: <%= l.content_type.toUpperCase() %>
+                        </div>
+                      </div>
+
+                      <div style="display: flex; gap: 0.5rem;">
+                        <a href="/instructor/courses/<%= course.id %>/lessons/<%= l.id %>/edit" class="btn btn-secondary btn-sm">
+                          Edit Content
+                        </a>
+                        <a href="/courses/<%= course.slug %>/learn/<%= l.slug %>" target="_blank" class="btn btn-secondary btn-sm">
+                          View
+                        </a>
+                      </div>
+                    </div>
+                  <% }) %>
+                <% } else { %>
+                  <p style="font-size: 0.85rem; color: var(--text-muted); padding: 0.5rem 0;">No lessons created in this module yet.</p>
+                <% } %>
+              </div>
+
+              <!-- Add Lesson Accordion to this Module -->
+              <details style="border-top: 1px solid var(--border-hairline); padding-top: 1rem;">
+                <summary style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent-primary); cursor: pointer;">
+                  + Add New Lesson to Module 0<%= mIdx + 1 %>
+                </summary>
+
+                <form action="/instructor/courses/<%= course.id %>/lessons/new" method="POST" style="margin-top: 1rem; padding: 1.25rem; background-color: var(--bg-subtle); border: 1px solid var(--border-hairline);">
+                  <input type="hidden" name="module_id" value="<%= m.id %>">
+                  
+                  <div class="form-group">
+                    <label class="form-label">Lesson Title</label>
+                    <input type="text" name="title" class="form-input" required placeholder="e.g. Failure Detectors and Heartbeat Semantics">
+                  </div>
+
+                  <div class="grid-cols-2">
+                    <div class="form-group">
+                      <label class="form-label">Content Format</label>
+                      <select name="content_type" class="form-select">
+                        <option value="article">Technical Article / Document</option>
+                        <option value="video">Video Recording & Notes</option>
+                        <option value="lab">Interactive Lab Guide</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Estimated Duration (Minutes)</label>
+                      <input type="number" name="duration_mins" class="form-input" value="20" min="5">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Video Embed URL (Optional)</label>
+                    <input type="url" name="video_url" class="form-input" placeholder="https://www.youtube.com/embed/...">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Lesson Technical Content (Markdown supported)</label>
+                    <textarea name="content" class="form-textarea" required placeholder="# Lesson Title&#10;&#10;Detailed explanation of engineering principles..."></textarea>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    Save & Publish Lesson &rarr;
+                  </button>
+                </form>
+              </details>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="panel" style="text-align: center; padding: 3rem; margin-bottom: 3rem;">
+          <h3 style="margin-bottom: 0.5rem;">No modules established yet.</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Add your first module below to organize your lessons.</p>
+        </div>
+      <% } %>
+
+      <!-- Add New Module Form -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Create New Module</h3>
+          <span class="index-tag">[ STRUCTURAL UNIT ]</span>
+        </div>
+
+        <form action="/instructor/courses/<%= course.id %>/modules/new" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="module_title">Module Title</label>
+            <input type="text" id="module_title" name="title" class="form-input" required placeholder="e.g. Distributed Consensus Protocols">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="module_desc">Module Description & Learning Outcomes</label>
+            <textarea id="module_desc" name="description" class="form-textarea" placeholder="Summarize concepts taught in this unit..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Create Module &rarr;
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Column: Quizzes & Assignments Overview -->
+    <div>
+      <!-- Quizzes Panel -->
+      <div class="panel" style="margin-bottom: 2rem;">
+        <div class="panel-header">
+          <h3>Examination Quizzes</h3>
+          <a href="/instructor/courses/<%= course.id %>/quizzes/new" class="btn btn-secondary btn-sm">+ Add</a>
+        </div>
+
+        <% if (quizzes && quizzes.length > 0) { %>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <% quizzes.forEach(q => { %>
+              <div style="padding: 0.85rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;"><%= q.title %></div>
+                <div style="font-family: var(--font-mono); font-size: 0.725rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                  Limit: <%= q.time_limit_mins %>m | Pass: <%= q.passing_score %>%
+                </div>
+                <a href="/assessments/quiz/<%= q.id %>" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                  Inspect Quiz &rarr;
+                </a>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">No quizzes authored yet.</p>
+        <% } %>
+      </div>
+
+      <!-- Laboratory Assignments Panel -->
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Laboratory Projects</h3>
+          <a href="/instructor/courses/<%= course.id %>/assignments/new" class="btn btn-secondary btn-sm">+ Add</a>
+        </div>
+
+        <% if (assignments && assignments.length > 0) { %>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <% assignments.forEach(a => { %>
+              <div style="padding: 0.85rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+                <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem;"><%= a.title %></div>
+                <div style="font-family: var(--font-mono); font-size: 0.725rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                  Max: <%= a.max_points %> pts | Due: <%= a.due_date ? a.due_date.substring(0, 10) : 'Open' %>
+                </div>
+                <a href="/assessments/assignment/<%= a.id %>" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                  Grading Queue &rarr;
+                </a>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">No laboratory assignments authored yet.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,207 @@
+/* ==========================================================================
+   COURSE LEARNING PLAYER - DISTRACTION-FREE EDITORIAL INTERFACE
+   ========================================================================== */
+
+.player-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: calc(100vh - var(--header-height));
+  background-color: var(--bg-canvas);
+}
+
+@media (max-width: 960px) {
+  .player-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Player Navigation Sidebar */
+.player-sidebar {
+  background-color: var(--bg-surface);
+  border-right: 1px solid var(--border-hairline);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--header-height));
+  position: sticky;
+  top: var(--header-height);
+  overflow-y: auto;
+}
+
+@media (max-width: 960px) {
+  .player-sidebar {
+    height: auto;
+    position: static;
+  }
+}
+
+.player-sidebar-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-hairline);
+  background-color: var(--bg-subtle);
+}
+
+.player-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+.sidebar-module-group {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-module-title {
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0.5rem 1.5rem;
+}
+
+.sidebar-lesson-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  border-left: 3px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.sidebar-lesson-item:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.sidebar-lesson-item.active {
+  background-color: var(--accent-surface);
+  color: var(--accent-primary);
+  border-left-color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.sidebar-lesson-item.completed .lesson-check {
+  color: var(--status-success);
+}
+
+.lesson-check-icon {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--border-hairline);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+  border-radius: var(--radius-sharp);
+  flex-shrink: 0;
+}
+
+.lesson-check-icon.done {
+  background-color: var(--status-success);
+  border-color: var(--status-success);
+  color: #FFFFFF;
+}
+
+/* Player Main Content Area */
+.player-main {
+  padding: 3rem 4rem;
+  max-width: 920px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .player-main {
+    padding: 1.5rem;
+  }
+}
+
+.player-content-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sharp);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-hairline);
+  background-color: #000;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Article Markdown Typography */
+.article-body {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.article-body h1 {
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.article-body h2 {
+  font-size: 1.45rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-hairline);
+}
+
+.article-body h3 {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body p {
+  margin-bottom: 1.25rem;
+  color: #2D3139;
+  font-size: 1.025rem;
+}
+
+.article-body ul, .article-body ol {
+  margin-left: 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.article-body li {
+  margin-bottom: 0.5rem;
+}
+
+.article-body blockquote {
+  border-left: 3px solid var(--accent-primary);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Player Navigation Controls */
+.player-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-hairline);
+  margin-top: 2rem;
+}

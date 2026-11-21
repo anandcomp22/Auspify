@@ -1,0 +1,167 @@
+<div class="container section-editorial">
+  <!-- Admin Header -->
+  <div class="panel" style="margin-bottom: 2.5rem; background-color: var(--bg-surface);">
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;">
+      <div>
+        <span class="index-tag accent">[ INFRASTRUCTURE CONSOLE // ROOT PRIVILEGES ]</span>
+        <h1 style="font-size: 2rem; margin-top: 0.25rem;"><%= currentUser.name %></h1>
+        <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+          <%= currentUser.headline || 'System Administrator' %> | <%= currentUser.email %>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem;">
+        <a href="/settings/domain" class="btn btn-primary">
+          Custom Domain Controls &rarr;
+        </a>
+        <a href="/instructor/courses/new" class="btn btn-secondary">
+          + Add Course
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Database Telemetry Grid (Strictly Zero Fake Metrics) -->
+  <div class="panel" style="margin-bottom: 3rem; background-color: var(--bg-surface);">
+    <div class="panel-header">
+      <div>
+        <h3>Live Operational Database Telemetry</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+          Computed directly from primary SQLite tables in real-time.
+        </p>
+      </div>
+      <span class="badge badge-success">ALL SYSTEMS NOMINAL</span>
+    </div>
+
+    <div class="grid-cols-4" style="gap: 1.5rem;">
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalStudents %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Active Students</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalInstructors %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Faculty Instructors</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalCourses %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Catalog Courses</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--accent-primary);"><%= metrics.totalCertificates %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Issued Certificates</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalEnrollments %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Total Enrollments</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalCompletions %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Completed Lessons</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalSubmissions %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Lab Submissions</div>
+      </div>
+
+      <div style="padding: 1.25rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 700; color: var(--text-primary);"><%= metrics.totalQuizAttempts %></div>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Exam Attempts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Platform Courses -->
+  <div class="panel" style="margin-bottom: 3rem;">
+    <div class="panel-header">
+      <h3>All Platform Courses (<%= courses.length %>)</h3>
+      <a href="/instructor/courses/new" class="btn btn-secondary btn-sm">+ New Course</a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Title</th>
+            <th>Faculty Author</th>
+            <th>Category</th>
+            <th>Difficulty</th>
+            <th>Status</th>
+            <th>Enrolled</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% courses.forEach(c => { %>
+            <tr>
+              <td><span class="badge badge-accent"><%= c.code %></span></td>
+              <td><strong><%= c.title %></strong></td>
+              <td><%= c.instructor_name %></td>
+              <td><%= c.category %></td>
+              <td><%= c.difficulty %></td>
+              <td>
+                <span class="badge <%= c.status === 'published' ? 'badge-success' : 'badge-default' %>">
+                  <%= c.status.toUpperCase() %>
+                </span>
+              </td>
+              <td><%= c.enrolled_count %></td>
+              <td>
+                <div style="display: flex; gap: 0.35rem;">
+                  <a href="/instructor/courses/<%= c.id %>/curriculum" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                    Curriculum
+                  </a>
+                  <a href="/instructor/courses/<%= c.id %>/edit" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">
+                    Edit
+                  </a>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Registered Users Directory -->
+  <div class="panel">
+    <div class="panel-header">
+      <h3>Registered User Directory</h3>
+      <span class="index-tag">[ IDENTITY ROSTER ]</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Joined Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(u => { %>
+            <tr>
+              <td><code>#<%= u.id %></code></td>
+              <td><strong><%= u.name %></strong></td>
+              <td><%= u.email %></td>
+              <td>
+                <span class="badge <%= u.role === 'admin' ? 'badge-danger' : (u.role === 'instructor' ? 'badge-accent' : 'badge-default') %>">
+                  <%= u.role.toUpperCase() %>
+                </span>
+              </td>
+              <td><%= u.created_at %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

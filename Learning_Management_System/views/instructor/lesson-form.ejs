@@ -1,0 +1,72 @@
+<div class="container section-editorial">
+  <div style="max-width: 860px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+      <a href="/instructor/courses/<%= course.id %>/curriculum" style="color: var(--text-muted); text-decoration: none;">&larr; BACK TO CURRICULUM</a>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--accent-primary);">EDIT LESSON</span>
+    </div>
+
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="panel-header">
+        <div>
+          <span class="index-tag accent">[ TECHNICAL CONTENT EDITOR ]</span>
+          <h1 style="font-size: 1.85rem; margin-top: 0.25rem;">Edit Lesson: <%= lesson.title %></h1>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+            COURSE: <%= course.code %> - <%= course.title %>
+          </div>
+        </div>
+      </div>
+
+      <form action="/instructor/courses/<%= course.id %>/lessons/<%= lesson.id %>/edit" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="title">Lesson Title</label>
+          <input type="text" id="title" name="title" class="form-input" value="<%= lesson.title %>" required>
+        </div>
+
+        <div class="grid-cols-3">
+          <div class="form-group">
+            <label class="form-label" for="module_id">Assigned Module</label>
+            <select id="module_id" name="module_id" class="form-select" required>
+              <% modules.forEach(m => { %>
+                <option value="<%= m.id %>" <%= lesson.module_id === m.id ? 'selected' : '' %>><%= m.title %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="content_type">Content Format</label>
+            <select id="content_type" name="content_type" class="form-select" required>
+              <option value="article" <%= lesson.content_type === 'article' ? 'selected' : '' %>>Technical Article</option>
+              <option value="video" <%= lesson.content_type === 'video' ? 'selected' : '' %>>Video Recording</option>
+              <option value="lab" <%= lesson.content_type === 'lab' ? 'selected' : '' %>>Interactive Lab</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="duration_mins">Duration (Minutes)</label>
+            <input type="number" id="duration_mins" name="duration_mins" class="form-input" value="<%= lesson.duration_mins %>" min="5" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="video_url">Video Embed URL (Optional)</label>
+          <input type="url" id="video_url" name="video_url" class="form-input" value="<%= lesson.video_url || '' %>" placeholder="https://www.youtube.com/embed/...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="content">Lesson Content (Markdown & Code Formatting)</label>
+          <textarea id="content" name="content" class="form-textarea" style="min-height: 380px; font-family: var(--font-mono); font-size: 0.85rem;" required><%= lesson.content %></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+          <a href="/instructor/courses/<%= course.id %>/curriculum" class="btn btn-secondary">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary">
+            Save Lesson Content &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

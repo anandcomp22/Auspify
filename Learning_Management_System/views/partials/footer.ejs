@@ -1,0 +1,65 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem;">
+          <div class="brand-monogram" style="background-color: #FFFFFF; color: #111215; border-color: #FFFFFF;">A</div>
+          <div>
+            <div style="font-weight: 700; letter-spacing: -0.02em; color: #FFFFFF; font-size: 1rem;">AUSPIFY INSTITUTE OF TECHNOLOGY</div>
+            <div style="font-size: 0.75rem; color: #9DA3AF; font-family: var(--font-mono);">COMPUTING INFRASTRUCTURE & LMS PLATFORM</div>
+          </div>
+        </div>
+        <p style="color: #9DA3AF; font-size: 0.85rem; max-width: 380px; line-height: 1.6; margin-bottom: 1.5rem;">
+          Engineered educational platform powering computer science curriculum, real-time assessment validation, and cryptographic certificate verification.
+        </p>
+        <div style="font-family: var(--font-mono); font-size: 0.75rem; color: #7B828E;">
+          ACCREDITATION: <%= typeof customDomain !== 'undefined' ? customDomain.accreditation : 'ISO/IEC 24751 Verified Platform' %>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Curriculum</h4>
+        <ul class="footer-links">
+          <li><a href="/courses?category=Systems+Engineering">Systems Engineering</a></li>
+          <li><a href="/courses?category=Programming+Languages">Compiler Construction</a></li>
+          <li><a href="/courses?category=Information+Security">Applied Cryptography</a></li>
+          <li><a href="/courses">Course Directory</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Platform Governance</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms & Conditions</a></li>
+          <li><a href="/verify/AUSPIFY-LMS-2026-88F4A19E">Credential Verification</a></li>
+          <li><a href="/settings/domain">Domain & Host Routing</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-heading">Infrastructure</h4>
+        <ul class="footer-links">
+          <li><span style="font-family: var(--font-mono); font-size: 0.8rem; color: #9DA3AF;">Host: <%= typeof customDomain !== 'undefined' ? customDomain.domain : 'lms.auspify.edu' %></span></li>
+          <li><span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--status-success);">SSL: Active (TLS 1.3)</span></li>
+          <li><span style="font-family: var(--font-mono); font-size: 0.8rem; color: #9DA3AF;">Engine: Node 22 SQLite</span></li>
+          <li><span style="font-family: var(--font-mono); font-size: 0.8rem; color: #9DA3AF;">Build: Release 2026.4</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>
+        &copy; 2026 Auspify Technologies. All rights reserved.
+      </div>
+      <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <span style="display: inline-flex; align-items: center; gap: 0.4rem; color: var(--status-success);">
+          <span style="width: 6px; height: 6px; background-color: var(--status-success); border-radius: 50%;"></span>
+          CONNECTED: <%= typeof customDomain !== 'undefined' ? customDomain.domain : 'lms.auspify.edu' %>
+        </span>
+        <a href="/privacy" style="color: #7B828E;">Compliance Invariants</a>
+        <a href="/terms" style="color: #7B828E;">Academic Honor Code</a>
+      </div>
+    </div>
+  </div>
+</footer>

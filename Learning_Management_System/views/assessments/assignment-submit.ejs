@@ -1,0 +1,196 @@
+<div class="container section-editorial">
+  <div style="max-width: 900px; margin: 0 auto;">
+    <!-- Breadcrumb -->
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+      <a href="/courses/<%= assignment.course_slug %>" style="color: var(--text-muted); text-decoration: none;"><%= assignment.course_code %></a>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--text-muted);">LABORATORIES</span>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--accent-primary);"><%= assignment.title %></span>
+    </div>
+
+    <!-- Assignment Briefing Card -->
+    <div class="panel" style="margin-bottom: 2rem;">
+      <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+          <span class="index-tag accent">[ LABORATORY PROJECT SPECIFICATION ]</span>
+          <h1 style="font-size: 2rem; margin-top: 0.35rem;"><%= assignment.title %></h1>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+            COURSE: <%= assignment.course_code %> - <%= assignment.course_title %>
+          </div>
+        </div>
+
+        <div style="text-align: right;">
+          <span class="badge badge-accent" style="font-size: 0.85rem; padding: 0.35rem 0.75rem;">
+            MAX: <%= assignment.max_points %> POINTS
+          </span>
+          <div style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+            DEADLINE: <%= assignment.due_date ? assignment.due_date.substring(0, 10) : 'Open Enrollment' %>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 1rem; color: var(--text-primary); line-height: 1.6; margin-bottom: 1.5rem;">
+        <%= assignment.description %>
+      </p>
+
+      <div class="panel" style="background-color: var(--bg-canvas); padding: 1.5rem;">
+        <h3 style="font-size: 0.95rem; font-family: var(--font-mono); margin-bottom: 0.75rem; color: var(--text-primary);">
+          [ DELIVERABLE REQUIREMENTS & RUBRIC ]
+        </h3>
+        <div style="font-size: 0.925rem; line-height: 1.7; color: var(--text-secondary); white-space: pre-line;">
+          <%= assignment.instructions %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Student Submission Section -->
+    <div class="panel" style="margin-bottom: 2.5rem;">
+      <div class="panel-header">
+        <h3>Laboratory Submission Portal</h3>
+        <% if (submission) { %>
+          <span class="badge <%= submission.status === 'graded' ? 'badge-success' : 'badge-warning' %>">
+            STATUS: <%= submission.status.toUpperCase() %>
+          </span>
+        <% } else { %>
+          <span class="badge badge-default">NOT SUBMITTED</span>
+        <% } %>
+      </div>
+
+      <% if (submission) { %>
+        <!-- Existing Submission Details & Grader Feedback -->
+        <div style="margin-bottom: 2rem; padding: 1.5rem; background-color: var(--bg-subtle); border: 1px solid var(--border-hairline);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-hairline); padding-bottom: 0.5rem;">
+            <span class="index-tag">[ PREVIOUS SUBMISSION RECORD ]</span>
+            <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">
+              Recorded on <%= submission.submitted_at %>
+            </span>
+          </div>
+
+          <% if (submission.status === 'graded') { %>
+            <div style="margin-bottom: 1.25rem; padding: 1rem; background-color: var(--status-success-bg); border-left: 3px solid var(--status-success);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--status-success);">
+                  FACULTY RUBRIC EVALUATION
+                </span>
+                <span style="font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; color: var(--status-success);">
+                  <%= submission.score %> / <%= assignment.max_points %> PTS
+                </span>
+              </div>
+              <p style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.6; margin: 0;">
+                <%= submission.feedback || 'Laboratory deliverables meet curriculum requirements.' %>
+              </p>
+              <% if (submission.grader_name) { %>
+                <div style="font-family: var(--font-mono); font-size: 0.725rem; color: var(--text-muted); margin-top: 0.5rem;">
+                  Graded by: <%= submission.grader_name %> on <%= submission.graded_at %>
+                </div>
+              <% } %>
+            </div>
+          <% } %>
+
+          <% if (submission.submission_text) { %>
+            <div style="margin-bottom: 1rem;">
+              <strong style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.35rem;">
+                SUBMITTED SUMMARY:
+              </strong>
+              <div style="font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; background-color: var(--bg-surface); padding: 1rem; border: 1px solid var(--border-hairline);">
+                <%= submission.submission_text %>
+              </div>
+            </div>
+          <% } %>
+
+          <% if (submission.file_path) { %>
+            <div style="display: flex; align-items: center; justify-content: space-between; background-color: var(--bg-surface); padding: 0.75rem 1rem; border: 1px solid var(--border-hairline);">
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-primary);">[ATTACHMENT]</span>
+                <span style="font-size: 0.875rem; font-weight: 600;"><%= submission.file_name || 'Deliverable Archive' %></span>
+              </div>
+              <a href="<%= submission.file_path %>" download class="btn btn-secondary btn-sm">
+                Download Submitted File
+              </a>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+
+      <!-- Submission / Resubmission Form -->
+      <form action="/assessments/assignment/<%= assignment.id %>/submit" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label class="form-label" for="submission_text">Technical Implementation Report / Notes</label>
+          <textarea id="submission_text" name="submission_text" class="form-textarea" placeholder="Detail your architecture, test methodology, and key invariants handled..."><%= submission ? submission.submission_text || '' : '' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="attachment">Deliverable Archive (PDF, ZIP, TAR.GZ, or Code Files)</label>
+          <input type="file" id="attachment" name="attachment" class="form-input" style="padding: 0.5rem;">
+          <small style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 0.25rem;">
+            Maximum upload size: 25MB. Accepted formats: PDF, ZIP, code archives.
+          </small>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+          <a href="/courses/<%= assignment.course_slug %>" class="btn btn-secondary">
+            Return to Course
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <%= submission ? 'Update & Resubmit Assignment' : 'Submit Assignment For Grading' %> &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Instructor Grading Queue (Only visible to Instructors/Admins) -->
+    <% if (['instructor', 'admin'].includes(currentUser ? currentUser.role : '')) { %>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Candidate Submissions Roster (<%= allSubmissions ? allSubmissions.length : 0 %>)</h3>
+          <span class="index-tag">[ FACULTY GRADING QUEUE ]</span>
+        </div>
+
+        <% if (allSubmissions && allSubmissions.length > 0) { %>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Submitted At</th>
+                  <th>Status</th>
+                  <th>Score</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% allSubmissions.forEach(sub => { %>
+                  <tr>
+                    <td>
+                      <strong><%= sub.student_name %></strong>
+                      <div style="font-family: var(--font-mono); font-size: 0.725rem; color: var(--text-muted);"><%= sub.student_email %></div>
+                    </td>
+                    <td><%= sub.submitted_at %></td>
+                    <td>
+                      <span class="badge <%= sub.status === 'graded' ? 'badge-success' : 'badge-warning' %>">
+                        <%= sub.status.toUpperCase() %>
+                      </span>
+                    </td>
+                    <td>
+                      <strong><%= sub.score !== null ? sub.score + ' / ' + assignment.max_points : 'Unscored' %></strong>
+                    </td>
+                    <td>
+                      <a href="/assessments/assignment/<%= assignment.id %>/grading/<%= sub.id %>" class="btn btn-secondary btn-sm">
+                        Grade Submission &rarr;
+                      </a>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } else { %>
+          <p style="font-size: 0.875rem; color: var(--text-muted); text-align: center; padding: 2rem;">
+            No candidate submissions recorded for this laboratory yet.
+          </p>
+        <% } %>
+      </div>
+    <% } %>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="container section-editorial">
+  <div style="max-width: 480px; margin: 2rem auto;">
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="index-tag accent" style="margin-bottom: 0.75rem;">
+        [ AUTHENTICATION GATEWAY // RBAC ]
+      </div>
+
+      <h1 style="font-size: 1.85rem; margin-bottom: 0.5rem;">
+        Academic Sign In
+      </h1>
+      
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 2rem;">
+        Access your student workspace, faculty curriculum center, or administration console.
+      </p>
+
+      <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+          <ul style="margin-left: 1rem;">
+            <% errors.forEach(err => { %>
+              <li><%= err %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form action="/auth/login" method="POST" id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="email">Institutional Email</label>
+          <input type="email" id="email" name="email" class="form-input" value="<%= email || '' %>" required autocomplete="email" placeholder="username@auspify.edu">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-input" required autocomplete="current-password" placeholder="Enter security passphrase">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+          Authenticate Access &rarr;
+        </button>
+      </form>
+
+      <!-- Quick Role Credential Selector for Instant Review -->
+      <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-hairline);">
+        <div class="index-tag" style="margin-bottom: 0.75rem;">
+          [ QUICK-FILL DEMO CREDENTIALS ]
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <button type="button" class="btn btn-secondary btn-sm" style="justify-content: space-between;" onclick="fillCredentials('student@auspify.edu', 'StudentPass123!')">
+            <span>Student (Julian Reed)</span>
+            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">student@auspify.edu</span>
+          </button>
+          
+          <button type="button" class="btn btn-secondary btn-sm" style="justify-content: space-between;" onclick="fillCredentials('thorne@auspify.edu', 'InstructorPass123!')">
+            <span>Instructor (Prof. Thorne)</span>
+            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">thorne@auspify.edu</span>
+          </button>
+          
+          <button type="button" class="btn btn-secondary btn-sm" style="justify-content: space-between;" onclick="fillCredentials('admin@auspify.edu', 'AdminPassword123!')">
+            <span>Administrator (Dr. Vance)</span>
+            <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">admin@auspify.edu</span>
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-top: 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+        Need an account? <a href="/auth/register" style="color: var(--accent-primary); font-weight: 600;">Enroll Student or Faculty</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function fillCredentials(email, pass) {
+    document.getElementById('email').value = email;
+    document.getElementById('password').value = pass;
+  }
+</script>

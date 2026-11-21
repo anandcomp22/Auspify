@@ -1,0 +1,69 @@
+<div class="container section-editorial">
+  <div style="max-width: 840px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+      <a href="/instructor/courses/<%= course.id %>/curriculum" style="color: var(--text-muted); text-decoration: none;">&larr; BACK TO CURRICULUM</a>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--accent-primary);">NEW LABORATORY PROJECT</span>
+    </div>
+
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="panel-header">
+        <div>
+          <span class="index-tag accent">[ LABORATORY BENCHMARK SPECIFICATION ]</span>
+          <h1 style="font-size: 1.85rem; margin-top: 0.25rem;">Create Laboratory Project</h1>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+            COURSE: <%= course.code %> - <%= course.title %>
+          </div>
+        </div>
+      </div>
+
+      <form action="/instructor/courses/<%= course.id %>/assignments/new" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="title">Project / Laboratory Title</label>
+          <input type="text" id="title" name="title" class="form-input" required placeholder="e.g. Lab Project 2: High-Throughput Write-Ahead Logging Engine">
+        </div>
+
+        <div class="grid-cols-3">
+          <div class="form-group">
+            <label class="form-label" for="module_id">Target Module</label>
+            <select id="module_id" name="module_id" class="form-select">
+              <option value="">Course-Wide (Capstone)</option>
+              <% modules.forEach(m => { %>
+                <option value="<%= m.id %>"><%= m.title %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="max_points">Maximum Score Points</label>
+            <input type="number" id="max_points" name="max_points" class="form-input" value="100" min="10" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="due_date">Submission Deadline</label>
+            <input type="date" id="due_date" name="due_date" class="form-input">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="description">Project Overview</label>
+          <textarea id="description" name="description" class="form-textarea" required placeholder="Summarize the laboratory objective and system architecture..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="instructions">Detailed Instructions & Grading Rubric</label>
+          <textarea id="instructions" name="instructions" class="form-textarea" style="min-height: 180px;" required placeholder="1. Functional Requirements...&#10;2. Performance Benchmarks...&#10;3. Deliverables and Archival Standards..."></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+          <a href="/instructor/courses/<%= course.id %>/curriculum" class="btn btn-secondary">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary">
+            Publish Laboratory Project &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

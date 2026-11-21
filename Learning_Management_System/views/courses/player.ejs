@@ -1,0 +1,168 @@
+<div class="player-layout">
+  <!-- Course Index Sidebar -->
+  <aside class="player-sidebar">
+    <div class="player-sidebar-header">
+      <div class="index-tag accent" style="margin-bottom: 0.25rem;">[ SYLLABUS DIRECTORY ]</div>
+      <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary);"><%= course.title %></div>
+    </div>
+
+    <div class="player-sidebar-content">
+      <% modules.forEach((m, mIdx) => { %>
+        <div class="sidebar-module-group">
+          <div class="sidebar-module-title">
+            MODULE 0<%= mIdx + 1 %>: <%= m.title %>
+          </div>
+
+          <% if (m.lessons && m.lessons.length > 0) { %>
+            <% m.lessons.forEach(l => { %>
+              <% const isDone = completedLessonIds.includes(l.id); %>
+              <% const isActive = currentLesson.id === l.id; %>
+              
+              <a href="/courses/<%= course.slug %>/learn/<%= l.slug %>" class="sidebar-lesson-item <%= isActive ? 'active' : '' %> <%= isDone ? 'completed' : '' %>" style="text-decoration: none;">
+                <div style="display: flex; align-items: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                  <span class="lesson-check-icon <%= isDone ? 'done' : '' %>">
+                    <%= isDone ? '✓' : '' %>
+                  </span>
+                  <span style="overflow: hidden; text-overflow: ellipsis;"><%= l.title %></span>
+                </div>
+                <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); margin-left: 0.5rem; flex-shrink: 0;"><%= l.duration_mins %>m</span>
+              </a>
+            <% }) %>
+          <% } %>
+        </div>
+      <% }) %>
+
+      <!-- Sidebar Assessments Section -->
+      <% if ((courseQuizzes && courseQuizzes.length > 0) || (courseAssignments && courseAssignments.length > 0)) { %>
+        <div style="border-top: 1px solid var(--border-hairline); margin-top: 1rem; padding-top: 1rem;">
+          <div class="sidebar-module-title" style="color: var(--accent-primary);">
+            ASSESSMENTS & BENCHMARKS
+          </div>
+
+          <% if (courseQuizzes) { %>
+            <% courseQuizzes.forEach(q => { %>
+              <a href="/assessments/quiz/<%= q.id %>" class="sidebar-lesson-item" style="text-decoration: none;">
+                <div style="display: flex; align-items: center;">
+                  <span style="font-family: var(--font-mono); font-size: 0.75rem; margin-right: 0.5rem; color: var(--accent-primary);">[Q]</span>
+                  <span><%= q.title %></span>
+                </div>
+                <span class="badge badge-accent" style="font-size: 0.65rem;">Quiz</span>
+              </a>
+            <% }) %>
+          <% } %>
+
+          <% if (courseAssignments) { %>
+            <% courseAssignments.forEach(a => { %>
+              <a href="/assessments/assignment/<%= a.id %>" class="sidebar-lesson-item" style="text-decoration: none;">
+                <div style="display: flex; align-items: center;">
+                  <span style="font-family: var(--font-mono); font-size: 0.75rem; margin-right: 0.5rem; color: var(--accent-primary);">[LAB]</span>
+                  <span><%= a.title %></span>
+                </div>
+                <span class="badge badge-default" style="font-size: 0.65rem;">Lab</span>
+              </a>
+            <% }) %>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </aside>
+
+  <!-- Main Lesson Content Area -->
+  <main class="player-main">
+    <div class="player-content-card">
+      <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-hairline); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;">
+        <div>
+          <span class="index-tag accent">[ LESSON SPECIFICATION // #<%= currentLesson.order_index %> ]</span>
+          <h1 style="font-size: 1.85rem; margin-top: 0.35rem;"><%= currentLesson.title %></h1>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span class="badge badge-default"><%= currentLesson.duration_mins %> Minutes</span>
+          <span class="badge badge-accent"><%= currentLesson.content_type.toUpperCase() %></span>
+        </div>
+      </div>
+
+      <!-- Embedded Video (if provided) -->
+      <% if (currentLesson.video_url) { %>
+        <div class="video-container">
+          <iframe src="<%= currentLesson.video_url %>" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      <% } %>
+
+      <!-- Formatted Technical Article Body -->
+      <article class="article-body">
+        <% 
+          // Simple formatted rendering for Markdown headers, code blocks, lists
+          let renderedContent = currentLesson.content
+            .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+            .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+            .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+            .replace(/```([a-z]*)\n([\s\S]*?)```/gim, '<pre><code>$2</code></pre>')
+            .replace(/`([^`]+)`/gim, '<code>$1</code>')
+            .replace(/^\* (.*$)/gim, '<li>$1</li>')
+            .replace(/^\d+\. (.*$)/gim, '<li>$1</li>')
+            .replace(/\n\n/gim, '</p><p>');
+        %>
+        <p><%- renderedContent %></p>
+      </article>
+
+      <!-- Attached Downloadable / Reference Resources -->
+      <% if (resources && resources.length > 0) { %>
+        <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-hairline);">
+          <h3 style="font-size: 1rem; margin-bottom: 0.75rem; font-family: var(--font-mono); color: var(--text-primary);">
+            [ REFERENCE SPECIFICATIONS & RESOURCES ]
+          </h3>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+            <% resources.forEach(r => { %>
+              <li style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.85rem; background-color: var(--bg-subtle); border: 1px solid var(--border-hairline);">
+                <span style="font-size: 0.875rem; font-weight: 500;"><%= r.name %></span>
+                <a href="<%= r.url %>" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">
+                  Access Resource &rarr;
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <!-- Lesson Completion and Navigation Controls -->
+      <div class="player-controls">
+        <div>
+          <% if (prevLesson) { %>
+            <a href="/courses/<%= course.slug %>/learn/<%= prevLesson.slug %>" class="btn btn-secondary">
+              &larr; Previous Lesson
+            </a>
+          <% } else { %>
+            <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">First Lesson</span>
+          <% } %>
+        </div>
+
+        <div>
+          <form action="/courses/<%= course.slug %>/lessons/<%= currentLesson.id %>/complete" method="POST" style="display: inline;">
+            <% if (isLessonCompleted) { %>
+              <button type="submit" class="btn btn-secondary" style="border-color: var(--status-success); color: var(--status-success);">
+                ✓ Completed (Click to Re-verify)
+              </button>
+            <% } else { %>
+              <button type="submit" class="btn btn-accent">
+                Mark Lesson Complete & Continue &rarr;
+              </button>
+            <% } %>
+          </form>
+        </div>
+
+        <div>
+          <% if (nextLesson) { %>
+            <a href="/courses/<%= course.slug %>/learn/<%= nextLesson.slug %>" class="btn btn-secondary">
+              Next Lesson &rarr;
+            </a>
+          <% } else { %>
+            <a href="/courses/<%= course.slug %>" class="btn btn-primary">
+              Course Complete &rarr;
+            </a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

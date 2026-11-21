@@ -1,0 +1,72 @@
+<div class="container section-editorial">
+  <div style="max-width: 840px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+      <a href="/assessments/assignment/<%= assignment.id %>" style="color: var(--text-muted); text-decoration: none;">&larr; BACK TO ASSIGNMENT</a>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--accent-primary);">FACULTY RUBRIC EVALUATION</span>
+    </div>
+
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="panel-header">
+        <div>
+          <span class="index-tag accent">[ FACULTY GRADING TERMINAL ]</span>
+          <h1 style="font-size: 1.85rem; margin-top: 0.25rem;">
+            <%= assignment.title %>
+          </h1>
+          <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+            CANDIDATE: <%= submission.student_name %> (<%= submission.student_email %>)
+          </div>
+        </div>
+
+        <span class="badge badge-accent">MAX: <%= assignment.max_points %> PTS</span>
+      </div>
+
+      <!-- Student Deliverable View -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size: 0.95rem; font-family: var(--font-mono); margin-bottom: 0.75rem;">
+          [ STUDENT SUBMISSION CONTENT ]
+        </h3>
+
+        <% if (submission.submission_text) { %>
+          <div style="background-color: var(--bg-canvas); padding: 1.25rem; border: 1px solid var(--border-hairline); font-size: 0.925rem; line-height: 1.6; white-space: pre-wrap; margin-bottom: 1rem;">
+            <%= submission.submission_text %>
+          </div>
+        <% } %>
+
+        <% if (submission.file_path) { %>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: var(--bg-canvas); border: 1px solid var(--border-hairline);">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);">ATTACHMENT:</span>
+              <strong style="font-size: 0.9rem; margin-left: 0.5rem;"><%= submission.file_name || 'Deliverable File' %></strong>
+            </div>
+            <a href="<%= submission.file_path %>" download class="btn btn-secondary btn-sm">
+              Download Deliverable File
+            </a>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Rubric Grading Form -->
+      <form action="/assessments/assignment/<%= assignment.id %>/grading/<%= submission.id %>" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="score">Awarded Score (0 to <%= assignment.max_points %>)</label>
+          <input type="number" id="score" name="score" class="form-input" min="0" max="<%= assignment.max_points %>" value="<%= submission.score !== null ? submission.score : '' %>" required style="max-width: 200px;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="feedback">Faculty Rubric Notes & Feedback</label>
+          <textarea id="feedback" name="feedback" class="form-textarea" placeholder="Detail rubric criteria, code quality, edge case handling, and recommendations for improvement..."><%= submission.feedback || '' %></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+          <a href="/assessments/assignment/<%= assignment.id %>" class="btn btn-secondary">
+            Cancel
+          </a>
+          <button type="submit" class="btn btn-primary">
+            Record Grade & Post Feedback &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+<div class="container section-editorial">
+  <div style="max-width: 800px; margin: 0 auto;">
+    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.8rem;">
+      <a href="/dashboard/instructor" style="color: var(--text-muted); text-decoration: none;">&larr; FACULTY WORKSPACE</a>
+      <span style="color: var(--border-hairline);">/</span>
+      <span style="color: var(--accent-primary);"><%= course ? 'EDIT COURSE' : 'NEW COURSE' %></span>
+    </div>
+
+    <div class="panel" style="padding: 2.5rem;">
+      <div class="panel-header">
+        <div>
+          <span class="index-tag accent">[ CURRICULUM ARCHITECTURE ]</span>
+          <h1 style="font-size: 1.85rem; margin-top: 0.25rem;">
+            <%= course ? 'Edit Course: ' + course.code : 'Author New Engineering Course' %>
+          </h1>
+        </div>
+      </div>
+
+      <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+          <ul style="margin-left: 1rem;">
+            <% errors.forEach(err => { %>
+              <li><%= err %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form action="<%= course ? '/instructor/courses/' + course.id + '/edit' : '/instructor/courses/new' %>" method="POST">
+        <div class="grid-cols-2">
+          <div class="form-group">
+            <label class="form-label" for="code">Course Code</label>
+            <input type="text" id="code" name="code" class="form-input" value="<%= (formData && formData.code) || '' %>" required placeholder="e.g. CS-401">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="category">Subject Category</label>
+            <select id="category" name="category" class="form-select" required>
+              <option value="Systems Engineering" <%= (formData && formData.category === 'Systems Engineering') ? 'selected' : '' %>>Systems Engineering</option>
+              <option value="Programming Languages" <%= (formData && formData.category === 'Programming Languages') ? 'selected' : '' %>>Programming Languages</option>
+              <option value="Information Security" <%= (formData && formData.category === 'Information Security') ? 'selected' : '' %>>Information Security</option>
+              <option value="Database Systems" <%= (formData && formData.category === 'Database Systems') ? 'selected' : '' %>>Database Systems</option>
+              <option value="Applied Algorithms" <%= (formData && formData.category === 'Applied Algorithms') ? 'selected' : '' %>>Applied Algorithms</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="title">Course Title</label>
+          <input type="text" id="title" name="title" class="form-input" value="<%= (formData && formData.title) || '' %>" required placeholder="e.g. Distributed Systems Architecture">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="subtitle">Course Subtitle</label>
+          <input type="text" id="subtitle" name="subtitle" class="form-input" value="<%= (formData && formData.subtitle) || '' %>" placeholder="e.g. Fault-Tolerant Consensus, Log-Structured Storage, and Partitions">
+        </div>
+
+        <div class="grid-cols-2">
+          <div class="form-group">
+            <label class="form-label" for="difficulty">Difficulty Level</label>
+            <select id="difficulty" name="difficulty" class="form-select" required>
+              <option value="Introductory" <%= (formData && formData.difficulty === 'Introductory') ? 'selected' : '' %>>Introductory</option>
+              <option value="Intermediate" <%= (formData && formData.difficulty === 'Intermediate') ? 'selected' : '' %>>Intermediate</option>
+              <option value="Advanced" <%= (formData && formData.difficulty === 'Advanced') ? 'selected' : '' %>>Advanced</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="estimated_hours">Estimated Study Hours</label>
+            <input type="number" id="estimated_hours" name="estimated_hours" class="form-input" value="<%= (formData && formData.estimated_hours) || 24 %>" min="1" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="description">Comprehensive Curriculum Description</label>
+          <textarea id="description" name="description" class="form-textarea" required placeholder="Outline key engineering concepts, mathematical models, and learning objectives..."><%= (formData && formData.description) || '' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="syllabus">Syllabus Outline (One topic per line)</label>
+          <textarea id="syllabus" name="syllabus" class="form-textarea" placeholder="Module 1: Clocks and Fault Models&#10;Module 2: Quorum Consensus & Raft&#10;Module 3: Log Replication"><%= course && course.syllabus_json ? JSON.parse(course.syllabus_json).join('\n') : '' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="status">Publication Status</label>
+          <select id="status" name="status" class="form-select">
+            <option value="published" <%= (formData && formData.status === 'published') ? 'selected' : '' %>>Published (Visible in Catalog)</option>
+            <option value="draft" <%= (formData && formData.status === 'draft') ? 'selected' : '' %>>Draft (Work in Progress)</option>
+            <option value="archived" <%= (formData && formData.status === 'archived') ? 'selected' : '' %>>Archived</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+          <a href="/dashboard/instructor" class="btn btn-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary">
+            <%= course ? 'Save Changes' : 'Create Course & Build Curriculum' %> &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
